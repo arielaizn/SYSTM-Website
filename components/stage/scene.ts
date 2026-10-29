@@ -87,20 +87,24 @@ export function createScene(canvas: HTMLCanvasElement, opts: Opts): SceneHandle 
   // ?snap skips springs and the intro. Used by QA, where a software renderer runs at a few fps.
   const snap = location.search.includes('snap');
 
-  // Performance: this canvas sits behind every page and is re-rendered continuously, and the glass cards blur it.
-  // MSAA is skipped on hi-dpi screens (the extra pixels already smooth edges), the pixel ratio is capped lower, and an
-  // adaptive scale `quality` (below) trades resolution for smoothness on slower machines.
+  // Performance, measured on an Apple M3 at 1728x1000 @2x (scrolling the home page):
+  //   - the physical glass is what costs: `transmission` re-renders the scene into a texture every frame, and
+  //     `dispersion` triples the samples taken from it. Dispersion is off (the fringing is barely visible) and the
+  //     transmission texture is small (0.3): that alone took scrolling from ~27fps to ~59fps with full MSAA.
+  //   - MSAA stays on: switching it off left visibly stair-stepped slab edges.
+  //   - pixel ratio is capped at 1.5 (2 costs about 20fps here). The adaptive scale below never goes under 0.75.
   const dpr = devicePixelRatio || 1;
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: dpr < 1.5, alpha: false, powerPreference: 'high-performance' });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
   const dprCap = mobileMq.matches ? 1.25 : 1.5;
   let quality = 1;
+  const MIN_QUALITY = 0.75;
   const applyPixelRatio = () => renderer.setPixelRatio(Math.min(dpr, dprCap) * quality);
   applyPixelRatio();
   renderer.setClearColor(0x080c0e, 1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
-  (renderer as unknown as { transmissionResolutionScale: number }).transmissionResolutionScale = mobileMq.matches ? 0.4 : 0.6;
+  (renderer as unknown as { transmissionResolutionScale: number }).transmissionResolutionScale = mobileMq.matches ? 0.25 : 0.3;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 100);
@@ -157,7 +161,6 @@ export function createScene(canvas: HTMLCanvasElement, opts: Opts): SceneHandle 
     sheenColor: new THREE.Color(0xacf4f8),
     sheenRoughness: 0.35,
   });
-  if (!mobileMq.matches) (glass as unknown as { dispersion: number }).dispersion = 0.25;
   // Fresnel rim: bevels and grazing silhouettes catch light, the way the edges of the brand render do.
   glass.onBeforeCompile = (shader) => {
     shader.fragmentShader = shader.fragmentShader.replace(
@@ -414,8 +417,8 @@ export function createScene(canvas: HTMLCanvasElement, opts: Opts): SceneHandle 
       const frameMs = now - prevNow;
       if (frameMs < 250) ema += (frameMs - ema) * 0.08;
       if (++samples % 45 === 0 && !snap) {
-        if (ema > 26 && quality > 0.55) {
-          quality = Math.max(0.55, quality * 0.8);
+        if (ema > 26 && quality > MIN_QUALITY) {
+          quality = Math.max(MIN_QUALITY, quality * 0.88);
           lastDrop = now;
           ema = 16;
           applyPixelRatio();
