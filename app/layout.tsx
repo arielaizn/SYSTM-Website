@@ -53,7 +53,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
       </head>
-      <body>
+      {/* Browser extensions (password managers, translators) add attributes to <body> before React loads. */}
+      <body suppressHydrationWarning>
         {children}
       </body>
     </html>
