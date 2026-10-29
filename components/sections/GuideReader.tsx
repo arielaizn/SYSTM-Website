@@ -1,9 +1,11 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Select } from '../ui/Select';
 
 type State = 'idle' | 'playing' | 'paused';
+
+const RATES = [1, 1.25, 1.5, 2, 0.85];
+const fmtRate = (r: number) => `${String(r).replace(/^0\./, '0.')}×`;
 
 /** Splits a text into short utterances: Chrome cuts long ones off after ~15 seconds, and short ones allow skipping. */
 function chunk(paras: string[]): string[] {
@@ -125,6 +127,29 @@ export function GuideReader({ title, paragraphs }: { title: string; paragraphs: 
   if (supported === null) return null;
   if (!supported) return <p className="reader reader--off">הקראה קולית לא נתמכת בדפדפן הזה.</p>;
   const total = chunks.current.length || 1;
+  const pct = state === 'idle' ? 0 : Math.round(((pos + 1) / total) * 100);
+  // About 900 characters of Hebrew per minute at normal speed.
+  const chars = chunks.current.reduce((n, c) => n + c.length, 0);
+  const minutes = Math.max(1, Math.round(chars / 900 / rate));
+  const cycleRate = () => setRate(RATES[(RATES.indexOf(rate) + 1) % RATES.length]);
+
+  const seek = (e: React.MouseEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    const rtl = getComputedStyle(e.currentTarget).direction === 'rtl';
+    const f = Math.min(1, Math.max(0, (rtl ? r.right - e.clientX : e.clientX - r.left) / r.width));
+    const to = Math.min(total - 1, Math.floor(f * total));
+    if (state === 'playing' || state === 'idle') speakFrom(to);
+    else {
+      idx.current = to;
+      setPos(to);
+    }
+  };
+  const barKey = (e: React.KeyboardEvent) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') jump(document.dir === 'rtl' ? -1 : 1);
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') jump(document.dir === 'rtl' ? 1 : -1);
+    else return;
+    e.preventDefault();
+  };
 
   return (
     <div className="reader lg lg--dense" role="group" aria-label="הקראה קולית של המדריך" data-state={state}>
@@ -136,20 +161,27 @@ export function GuideReader({ title, paragraphs }: { title: string; paragraphs: 
         )}
       </button>
       <div className="reader__main">
-        <b>{state === 'idle' ? 'להאזנה למדריך' : state === 'paused' ? 'מושהה' : 'מקריא…'}</b>
-        <div className="reader__bar" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round((pos / total) * 100)} aria-label="התקדמות ההקראה">
-          <i style={{ width: `${Math.round((pos / total) * 100)}%` }} />
+        <div className="reader__head">
+          <b>{state === 'idle' ? 'להאזנה למדריך' : state === 'paused' ? 'מושהה' : 'מקריא עכשיו'}</b>
+          <span className="reader__eq" aria-hidden="true"><i /><i /><i /><i /></span>
+          <small className="reader__meta">{state === 'idle' ? `כ־${minutes} דק׳ האזנה` : `${pos + 1} / ${total}`}</small>
         </div>
-        {!hasVoice ? <small>אין במכשיר הזה קול בעברית, ולכן ההקראה עלולה להישמע לא טבעית.</small> : null}
+        <div className="reader__bar" role="slider" tabIndex={0} aria-label="התקדמות ההקראה (לחצו כדי לדלג)" aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct} onClick={seek} onKeyDown={barKey}>
+          <i style={{ width: `${pct}%` }} />
+        </div>
+        {!hasVoice ? <small className="reader__warn">אין במכשיר הזה קול בעברית, ולכן ההקראה עלולה להישמע לא טבעית.</small> : null}
       </div>
       <div className="reader__ctl">
-        <button type="button" aria-label="משפט קודם" onClick={() => jump(-1)} disabled={state === 'idle'}>‹</button>
-        <button type="button" aria-label="משפט הבא" onClick={() => jump(1)} disabled={state === 'idle'}>›</button>
-        <button type="button" aria-label="עצירה" onClick={stop} disabled={state === 'idle'}>■</button>
-        <label className="reader__rate">
-          <span className="sr-only">מהירות</span>
-          <Select variant="pill" aria-label="מהירות הקראה" value={String(rate)} onChange={(v) => setRate(Number(v))} options={[{ value: '0.85', label: '0.85×' }, { value: '1', label: '1×' }, { value: '1.25', label: '1.25×' }, { value: '1.5', label: '1.5×' }]} />
-        </label>
+        <button type="button" aria-label="משפט קודם" onClick={() => jump(-1)} disabled={state === 'idle'}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5v14M19 5l-9 7 9 7z" /></svg>
+        </button>
+        <button type="button" aria-label="עצירה" onClick={stop} disabled={state === 'idle'}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2" /></svg>
+        </button>
+        <button type="button" aria-label="משפט הבא" onClick={() => jump(1)} disabled={state === 'idle'}>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 5v14M5 5l9 7-9 7z" /></svg>
+        </button>
+        <button type="button" className="reader__rate" aria-label={`מהירות הקראה ${fmtRate(rate)}. לחצו לשינוי`} onClick={cycleRate}>{fmtRate(rate)}</button>
       </div>
     </div>
   );

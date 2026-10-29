@@ -204,21 +204,35 @@
 .article--wide { grid-template-columns: minmax(0, 1fr); } .article--wide .article__body { margin-inline: auto; }
 
 /* Read-aloud player */
-.reader { display: flex; align-items: center; gap: 16px; padding: 14px 18px; --lg-r: 22px; margin-bottom: 28px; }
-.reader--off { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
-.reader__play { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--ice); color: #03181b; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 0 26px -2px rgb(172 244 248 / 0.55); transition: transform 150ms var(--ease-out); }
+.reader { display: flex; align-items: center; gap: 18px; padding: 16px 20px; --lg-r: 26px; margin-bottom: 28px; }
+.reader--off { color: var(--muted); font-size: 14px; margin-bottom: 20px; display: block; }
+.reader__play { flex: none; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--ice); color: #03181b; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 0 30px -2px rgb(172 244 248 / 0.5); transition: transform 150ms var(--ease-out), box-shadow 200ms ease; }
 .reader__play:active { transform: scale(0.94); }
-.reader__play svg { width: 20px; height: 20px; fill: currentColor; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-.reader__main { flex: 1; min-width: 0; display: grid; gap: 8px; }
-.reader__main b { font-size: 15px; font-weight: 600; }
-.reader__main small { color: var(--muted); font-size: 12.5px; }
-.reader__bar { height: 4px; border-radius: 99px; background: rgb(255 255 255 / 0.12); overflow: hidden; }
-.reader__bar i { display: block; height: 100%; background: var(--ice); box-shadow: 0 0 12px var(--ice); transition: width 300ms linear; }
-.reader__ctl { display: flex; align-items: center; gap: 4px; flex: none; }
-.reader__ctl button { width: 36px; height: 36px; border-radius: 10px; font-size: 18px; color: var(--ink); }
-.reader__ctl button:disabled { opacity: 0.3; }
-.reader__ctl button:hover:not(:disabled) { background: rgb(172 244 248 / 0.12); }
-.reader__rate select { background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; height: 36px; padding-inline: 8px; }
-@media (max-width: 560px) { .reader { flex-wrap: wrap; } .reader__ctl { width: 100%; justify-content: space-between; } }
+.reader[data-state='playing'] .reader__play { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 0 0 6px rgb(172 244 248 / 0.12), 0 0 36px 0 rgb(172 244 248 / 0.6); }
+.reader__play svg { width: 22px; height: 22px; fill: currentColor; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.reader__main { flex: 1; min-width: 0; display: grid; gap: 10px; }
+.reader__head { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.reader__head b { font-size: 16px; font-weight: 600; white-space: nowrap; }
+.reader__meta { margin-inline-start: auto; color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; direction: ltr; }
+.reader__warn { color: var(--muted); font-size: 12.5px; }
+.reader__eq { display: none; align-items: flex-end; gap: 3px; height: 14px; }
+.reader[data-state='playing'] .reader__eq { display: inline-flex; }
+.reader__eq i { width: 3px; height: 100%; border-radius: 2px; background: var(--ice); transform-origin: bottom; animation: reader-eq 900ms ease-in-out infinite; }
+.reader__eq i:nth-child(2) { animation-delay: -300ms; } .reader__eq i:nth-child(3) { animation-delay: -600ms; } .reader__eq i:nth-child(4) { animation-delay: -150ms; }
+@keyframes reader-eq { 0%, 100% { transform: scaleY(0.25); } 50% { transform: scaleY(1); } }
+.reader__bar { position: relative; height: 6px; border-radius: 99px; background: rgb(255 255 255 / 0.12); cursor: pointer; touch-action: manipulation; }
+.reader__bar::before { content: ''; position: absolute; inset: -12px 0; } /* bigger touch target */
+.reader__bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, rgb(172 244 248 / 0.55), var(--ice)); box-shadow: 0 0 12px rgb(172 244 248 / 0.7); transition: width 300ms linear; position: relative; }
+.reader__bar i::after { content: ''; position: absolute; inset-block-start: 50%; inset-inline-end: -7px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 3px rgb(172 244 248 / 0.4), 0 0 14px var(--ice); transform: translateY(-50%); opacity: 0; transition: opacity 150ms; }
+.reader[data-state='playing'] .reader__bar i::after, .reader[data-state='paused'] .reader__bar i::after, .reader__bar:focus-visible i::after { opacity: 1; }
+.reader__bar:focus-visible { outline: 2px solid var(--ice); outline-offset: 6px; }
+.reader__ctl { display: flex; align-items: center; gap: 4px; flex: none; direction: ltr; padding: 4px; border-radius: 16px; background: rgb(255 255 255 / 0.05); box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.08); }
+.reader__ctl button { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: var(--ink); transition: background 150ms, opacity 150ms; }
+.reader__ctl svg { width: 18px; height: 18px; fill: currentColor; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.reader__ctl button:disabled { opacity: 0.28; }
+.reader__ctl button:hover:not(:disabled), .reader__ctl button:focus-visible { background: rgb(172 244 248 / 0.14); }
+.reader__ctl .reader__rate { width: auto; min-width: 52px; padding-inline: 10px; font-size: 14px; font-weight: 600; color: var(--ice); font-variant-numeric: tabular-nums; box-shadow: inset 0 0 0 1px rgb(172 244 248 / 0.35); margin-inline-start: 4px; }
+@media (max-width: 560px) { .reader { flex-wrap: wrap; padding: 14px 16px; gap: 14px; } .reader__main { flex-basis: calc(100% - 74px); } .reader__ctl { width: 100%; justify-content: space-between; } .reader__ctl button { flex: 1; } .reader__ctl .reader__rate { flex: none; } }
+@media (prefers-reduced-motion: reduce) { .reader__eq i { animation: none; transform: scaleY(0.6); } .reader__bar i { transition: none; } }
 .cover-hero { --lg-r: 28px; overflow: hidden; margin-bottom: 24px; }
 .cover-hero .art { aspect-ratio: 21 / 9; }
