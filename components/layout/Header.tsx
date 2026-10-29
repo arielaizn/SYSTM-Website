@@ -118,7 +118,7 @@ export function Header() {
 
   return (
     <header ref={header} className="site-header" data-scrolled={scrolled} onPointerLeave={closeMegaSoon} onBlur={(e) => { if (!header.current?.contains(e.relatedTarget as Node)) setMega(null); }}>
-      <div className="nav lg" data-refract="22">
+      <div className="nav lg">
         <SmartLink href="/" className="nav__logo" aria-label="SYSTM, דף הבית">
           <Wordmark />
         </SmartLink>

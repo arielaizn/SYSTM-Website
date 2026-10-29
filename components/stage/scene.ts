@@ -87,14 +87,20 @@ export function createScene(canvas: HTMLCanvasElement, opts: Opts): SceneHandle 
   // ?snap skips springs and the intro. Used by QA, where a software renderer runs at a few fps.
   const snap = location.search.includes('snap');
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
-  const dprCap = mobileMq.matches ? 1.5 : 2;
-  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, dprCap));
+  // Performance: this canvas sits behind every page and is re-rendered continuously, and the glass cards blur it.
+  // MSAA is skipped on hi-dpi screens (the extra pixels already smooth edges), the pixel ratio is capped lower, and an
+  // adaptive scale `quality` (below) trades resolution for smoothness on slower machines.
+  const dpr = devicePixelRatio || 1;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: dpr < 1.5, alpha: false, powerPreference: 'high-performance' });
+  const dprCap = mobileMq.matches ? 1.25 : 1.5;
+  let quality = 1;
+  const applyPixelRatio = () => renderer.setPixelRatio(Math.min(dpr, dprCap) * quality);
+  applyPixelRatio();
   renderer.setClearColor(0x080c0e, 1);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
-  (renderer as unknown as { transmissionResolutionScale: number }).transmissionResolutionScale = mobileMq.matches ? 0.5 : 0.85;
+  (renderer as unknown as { transmissionResolutionScale: number }).transmissionResolutionScale = mobileMq.matches ? 0.4 : 0.6;
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 100);
@@ -331,6 +337,20 @@ export function createScene(canvas: HTMLCanvasElement, opts: Opts): SceneHandle 
   };
   addEventListener('pointermove', onPointer, { passive: true });
 
+  // Activity: while the visitor scrolls, moves the pointer or resizes, the stage renders at full rate. After a quiet
+  // moment only the slow ambient motion is left, so it drops to ~30fps and leaves the GPU to the page.
+  let activeAt = performance.now();
+  const bump = () => {
+    activeAt = performance.now();
+  };
+  const activity = ['scroll', 'wheel', 'touchmove', 'pointermove', 'keydown', 'resize'] as const;
+  activity.forEach((ev) => addEventListener(ev, bump, { passive: true }));
+  let prevNow = 0;
+  let lastRender = 0;
+  let ema = 16;
+  let samples = 0;
+  let lastDrop = 0;
+
   let cw = 0;
   let ch = 0;
   let resized = true;
@@ -388,6 +408,27 @@ export function createScene(canvas: HTMLCanvasElement, opts: Opts): SceneHandle 
       last = now;
       return;
     }
+    const active = now - activeAt < 1800 || now < introUntil;
+    if (!active && now - lastRender < 32) return;
+    if (active && prevNow) {
+      const frameMs = now - prevNow;
+      if (frameMs < 250) ema += (frameMs - ema) * 0.08;
+      if (++samples % 45 === 0 && !snap) {
+        if (ema > 26 && quality > 0.55) {
+          quality = Math.max(0.55, quality * 0.8);
+          lastDrop = now;
+          ema = 16;
+          applyPixelRatio();
+          renderer.setSize(cw, ch, false);
+        } else if (ema < 17.5 && quality < 1 && now - lastDrop > 10000) {
+          quality = Math.min(1, quality * 1.15);
+          applyPixelRatio();
+          renderer.setSize(cw, ch, false);
+        }
+      }
+    }
+    prevNow = active ? now : 0;
+    lastRender = now;
     const dt = Math.max(0, Math.min(0.05, (now - last) / 1000));
     last = now;
     const reduced = html.classList.contains('motion-off');
@@ -498,6 +539,7 @@ export function createScene(canvas: HTMLCanvasElement, opts: Opts): SceneHandle 
     dispose() {
       cancelAnimationFrame(raf);
       removeEventListener('pointermove', onPointer);
+      activity.forEach((ev) => removeEventListener(ev, bump));
       removeEventListener('resize', resize);
       ro.disconnect();
       stageBus.ready = false;
