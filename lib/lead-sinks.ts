@@ -7,17 +7,17 @@ import type { Lead } from './lead.ts';
 
 export type Delivery = 'ok' | 'not_configured' | 'failed';
 
-async function toConvex(lead: Lead) {
+async function toConvex(lead: Lead, source: string) {
   await withTimeout(
     convexClient().mutation(api.leads.submit, {
       key: adminKey(),
-      lead: { service: lead.service, name: lead.name, phone: lead.phone, email: lead.email, company: lead.company, message: lead.message, source: 'website' },
+      lead: { service: lead.service, name: lead.name, phone: lead.phone, email: lead.email, company: lead.company, message: lead.message, source },
     }),
     8000,
   );
 }
 
-async function toWebhook(lead: Lead) {
+async function toWebhook(lead: Lead, source: string) {
   const target = process.env.LEAD_WEBHOOK_URL;
   const response = await fetch(target!, {
     method: 'POST',
@@ -25,17 +25,17 @@ async function toWebhook(lead: Lead) {
       'content-type': 'application/json',
       ...(process.env.LEAD_WEBHOOK_TOKEN ? { authorization: `Bearer ${process.env.LEAD_WEBHOOK_TOKEN}` } : {}),
     },
-    body: JSON.stringify({ ...lead, source: 'systm-website', receivedAt: new Date().toISOString() }),
+    body: JSON.stringify({ ...lead, source: source === 'website' ? 'systm-website' : source, receivedAt: new Date().toISOString() }),
     signal: AbortSignal.timeout(8000),
   });
   if (!response.ok) throw new Error('webhook rejected');
 }
 
-export async function deliverLead(lead: Lead): Promise<Delivery> {
+export async function deliverLead(lead: Lead, source = 'website'): Promise<Delivery> {
   const jobs: Promise<void>[] = [];
-  if (convexConfigured() && adminKey().length >= 24) jobs.push(toConvex(lead));
+  if (convexConfigured() && adminKey().length >= 24) jobs.push(toConvex(lead, source));
   const hook = process.env.LEAD_WEBHOOK_URL;
-  if (hook && hook.startsWith('https://')) jobs.push(toWebhook(lead));
+  if (hook && hook.startsWith('https://')) jobs.push(toWebhook(lead, source));
   if (jobs.length === 0) return 'not_configured';
   const results = await Promise.allSettled(jobs);
   return results.some((r) => r.status === 'fulfilled') ? 'ok' : 'failed';

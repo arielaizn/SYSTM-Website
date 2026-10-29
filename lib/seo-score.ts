@@ -36,3 +36,24 @@ export function seoScore(checks: SeoCheck[]): number {
   const total = checks.reduce((n, c) => n + c.weight, 0);
   return Math.round((checks.reduce((n, c) => n + (c.ok ? c.weight : 0), 0) / total) * 100);
 }
+
+export type LandingSeoInput = { title: string; slug: string; seoTitle?: string; seoDescription?: string; text: string; blocks: { type: string; props: Record<string, unknown> }[] };
+
+/** Checks for a landing page: structure and snippet quality (no keyword checks: landing pages are usually built around an offer, not a query). */
+export function landingChecks(i: LandingSeoInput): SeoCheck[] {
+  const title = (i.seoTitle || i.title).trim();
+  const desc = (i.seoDescription ?? '').trim();
+  const words = i.text.split(/\s+/).filter(Boolean).length;
+  const hero = i.blocks.find((b) => b.type === 'hero');
+  const imgs = i.blocks.filter((b) => b.type === 'image' && b.props.src);
+  return [
+    { id: 'h1', ok: !!hero && String(hero.props.title ?? '').trim().length > 5, label: 'יש כותרת ראשית (H1) בבלוק Hero', tip: 'לכל דף צריכה להיות כותרת ראשית אחת וברורה.', weight: 18 },
+    { id: 'title-len', ok: title.length >= 30 && title.length <= 60, label: `אורך הכותרת בגוגל (${title.length}) בין 30 ל־60`, tip: 'כותרת ארוכה נחתכת בתוצאות החיפוש.', weight: 14 },
+    { id: 'desc', ok: desc.length >= 70 && desc.length <= 160, label: `אורך התיאור (${desc.length}) בין 70 ל־160`, tip: 'בלי תיאור גוגל ממציא אחד לבד.', weight: 14 },
+    { id: 'cta', ok: i.blocks.some((b) => b.type === 'form' || b.type === 'cta'), label: 'יש קריאה לפעולה או טופס', tip: 'דף בלי פעולה לא מביא לידים.', weight: 16 },
+    { id: 'form', ok: i.blocks.some((b) => b.type === 'form'), label: 'יש טופס לידים', tip: 'הוסיפו בלוק "טופס לידים".', weight: 10 },
+    { id: 'words', ok: words >= 150, label: `יש מספיק טקסט (${words} מילים), לפחות 150`, tip: 'דף דל בטקסט קשה לגוגל להבין.', weight: 12 },
+    { id: 'alt', ok: imgs.every((b) => String(b.props.alt ?? '').trim()), label: 'לכל התמונות יש טקסט חלופי', tip: 'נגישות ו־SEO של תמונות.', weight: 6 },
+    { id: 'slug', ok: /^[a-z0-9]+(-[a-z0-9]+)*$/.test(i.slug) && i.slug.length <= 60, label: 'כתובת קצרה, באנגלית עם מקפים', tip: 'למשל ai-agents-webinar.', weight: 10 },
+  ];
+}

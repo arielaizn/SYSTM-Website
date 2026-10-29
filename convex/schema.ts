@@ -82,6 +82,35 @@ export default defineSchema({
     .index('by_created', ['createdAt'])
     .index('by_status', ['status', 'createdAt']),
 
+  // Landing pages built in the admin. `blocks` is a JSON array (see lib/landing.ts); the server validates its shape.
+  pages: defineTable({
+    slug: v.string(),
+    title: v.string(),
+    status: v.union(v.literal('draft'), v.literal('published')),
+    blocks: v.string(),
+    seoTitle: v.optional(v.string()),
+    seoDescription: v.optional(v.string()),
+    ogImage: v.optional(v.string()),
+    noindex: v.optional(v.boolean()),
+    publishedAt: v.optional(v.number()),
+    updatedAt: v.number(),
+  })
+    .index('by_slug', ['slug'])
+    .index('by_updated', ['updatedAt']),
+
+  // Short links: /go/<code> redirects to `url` and counts the click.
+  links: defineTable({
+    code: v.string(),
+    url: v.string(),
+    note: v.string(),
+    active: v.boolean(),
+    clicks: v.number(),
+    lastClickAt: v.optional(v.number()),
+    createdAt: v.number(),
+  })
+    .index('by_code', ['code'])
+    .index('by_created', ['createdAt']),
+
   audit: defineTable({
     at: v.number(),
     action: v.string(),

@@ -10,6 +10,7 @@ import { verifyPassword } from '../../lib/admin-password';
 import { checkLogin, recordFailure, recordSuccess } from '../../lib/admin-rate';
 import { dropVersionCache, endSession, requireAdminAction, startSession } from '../../lib/admin-session';
 import { adminConfigured } from '../../lib/convex-server';
+import { normalizeBlocks, type AnyBlock } from '../../lib/landing';
 import { bodyToSections, sanitizeBody } from '../../lib/sanitize';
 import { articles as defaultArticles, faqs as defaultFaqs, services as defaultServices } from '../../lib/content';
 import { defaultSettings } from '../../lib/content-source';
@@ -35,6 +36,13 @@ const HEBREW: Record<string, string> = {
   'empty note': 'ההערה ריקה',
   'duplicate service slug': 'יש שני שירותים עם אותה כתובת',
   'duplicate article slug': 'יש שני מדריכים עם אותה כתובת',
+  'blocks must be valid JSON': 'תוכן הדף אינו תקין',
+  'too many blocks': 'יותר מדי בלוקים בדף',
+  'invalid block': 'אחד הבלוקים אינו תקין',
+  'url must be an https link': 'הקישור חייב להתחיל ב־https',
+  'invalid code': 'קוד קצר: אותיות אנגליות קטנות, ספרות, מקף וקו תחתון (2 עד 40 תווים)',
+  'code already in use': 'הקוד הקצר כבר בשימוש',
+  'could not allocate a code': 'לא הצלחנו ליצור קוד. נסו שוב',
   'too many leads at once': 'אפשר לטפל בעד 200 לידים בבת אחת',
   timeout: 'השרת לא ענה בזמן. נסו שוב',
   unauthorized: 'פג תוקף ההתחברות. התחברו מחדש',
@@ -223,6 +231,37 @@ export async function serviceReorder(ids: string[]) {
     },
     { content: true },
   );
+}
+
+// --- Landing pages --------------------------------------------------------------------------------------
+export type PageInput = { slug: string; title: string; status: 'draft' | 'published'; blocks: AnyBlock[]; seoTitle?: string; seoDescription?: string; ogImage?: string; noindex?: boolean };
+
+export async function pageSave(id: string | null, input: PageInput) {
+  // Blocks are rebuilt from scratch on the server: unknown types dropped, links and images restricted, rich text sanitized.
+  const blocks = normalizeBlocks(input.blocks, sanitizeBody);
+  const data = { slug: input.slug, title: input.title, status: input.status, blocks: JSON.stringify(blocks), seoTitle: input.seoTitle || undefined, seoDescription: input.seoDescription || undefined, ogImage: input.ogImage || undefined, noindex: input.noindex || undefined };
+  return run(async () => (await adminMutation(api.pages.upsert, { id: (id as Id<'pages'>) ?? undefined, data })) as string, { content: true });
+}
+
+export async function pageSetStatus(id: string, status: 'draft' | 'published') {
+  return run(async () => { await adminMutation(api.pages.setStatus, { id: id as Id<'pages'>, status }); return null; }, { content: true });
+}
+
+export async function pageDelete(id: string) {
+  return run(async () => { await adminMutation(api.pages.remove, { id: id as Id<'pages'> }); return null; }, { content: true });
+}
+
+// --- Short links ----------------------------------------------------------------------------------------
+export async function linkCreate(input: { url: string; code?: string; note?: string }) {
+  return run(async () => (await adminMutation(api.links.create, { url: input.url.trim(), code: input.code?.trim() || undefined, note: input.note?.trim() || undefined })) as { id: string; code: string });
+}
+
+export async function linkUpdate(id: string, patch: { url?: string; note?: string; active?: boolean }) {
+  return run(async () => { await adminMutation(api.links.update, { id: id as Id<'links'>, ...patch }); return null; });
+}
+
+export async function linkDelete(id: string) {
+  return run(async () => { await adminMutation(api.links.remove, { id: id as Id<'links'> }); return null; });
 }
 
 // --- Articles -----------------------------------------------------------------------------------------

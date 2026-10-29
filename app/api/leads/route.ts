@@ -45,7 +45,10 @@ export async function POST(request: Request) {
   const result = validateLead(body);
   if (!result.ok) return json(422, { error: 'invalid', fields: Object.keys(result.errors) });
 
-  const delivery = await deliverLead(result.data);
+  // Landing pages tag their leads "lp:<slug>". Anything else is the plain website form.
+  const rawSource = (body as { source?: unknown }).source;
+  const source = typeof rawSource === 'string' && /^lp:[a-z0-9-]{1,60}$/.test(rawSource) ? rawSource.slice(0, 40) : 'website';
+  const delivery = await deliverLead(result.data, source);
   if (delivery === 'not_configured') return json(503, { error: 'not_configured' });
   if (delivery === 'failed') return json(502, { error: 'delivery_failed' });
   notifyInBackground(result.data);
