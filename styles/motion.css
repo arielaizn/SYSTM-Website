@@ -1,0 +1,44 @@
+/* Blur reveal (docs/04): blur(8px) + opacity 0 -> sharp, 800ms ease-out, triggered at 30% visibility, repeats on re-entry.
+   The state classes are added by the inline boot script in <head>, so a visitor without JS sees everything.
+   The sharp state is `filter: none` (not blur(0)): any filter makes the element a backdrop root and kills child glass. */
+.motion-enabled [data-reveal] {
+  filter: blur(var(--reveal-blur));
+  opacity: 0;
+  transition: filter var(--reveal-ms) var(--ease-out), opacity var(--reveal-ms) var(--ease-out);
+}
+.motion-enabled [data-reveal].is-visible,
+.motion-enabled [data-reveal]:focus-within {
+  filter: none;
+  opacity: 1;
+  transition-delay: var(--d, 0ms);
+}
+.motion-off [data-reveal] {
+  filter: none !important;
+  opacity: 1 !important;
+  transition: none !important;
+}
+
+/* Page transitions (same-document View Transitions, driven by components/ui/SmartLink). The 3D stage owns its
+   own group so it never flickers while the DOM underneath swaps. */
+.stage { view-transition-name: stage; }
+::view-transition-group(stage) { animation: none; }
+::view-transition-old(stage), ::view-transition-new(stage) { animation: none; mix-blend-mode: normal; }
+::view-transition-old(root) { animation: vt-out 170ms var(--ease-out) both; }
+::view-transition-new(root) { animation: vt-in 320ms var(--ease-out) both; }
+@keyframes vt-out { to { opacity: 0; filter: blur(6px); } }
+@keyframes vt-in { from { opacity: 0; filter: blur(8px); } }
+
+/* Marquee: constant motion, so linear. Duplicated track, translated by exactly half. */
+.marquee { overflow: hidden; direction: ltr; }
+.marquee__track { display: flex; width: max-content; animation: marquee 46s linear infinite; }
+.marquee:hover .marquee__track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+.motion-off .marquee__track { animation: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  [data-reveal] { filter: none !important; opacity: 1 !important; }
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
+  .marquee__track { animation: none; }
+}

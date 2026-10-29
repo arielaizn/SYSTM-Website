@@ -1,0 +1,148 @@
+/* Liquid glass.
+   Layers, outside in: backdrop (blur + saturate, optionally an SVG refraction map in Chromium) -> tint -> inset
+   highlights -> conic specular rim that follows the pointer -> pointer glare. Never nest a .lg inside an element
+   that has a filter, opacity < 1 or mask: that element becomes the backdrop root and the glass sees nothing.
+   Reveal classes therefore go on the .lg element itself. */
+
+.lg {
+  --lg-r: var(--r-card);
+  --lg-fill-a: rgb(255 255 255 / 0.085);
+  --lg-fill-b: rgb(255 255 255 / 0.018);
+  --lg-tint: rgb(172 244 248 / 0.03);
+  --mx: 50%;
+  --my: 0%;
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--lg-r);
+  background:
+    linear-gradient(150deg, var(--lg-fill-a), var(--lg-fill-b) 52%, var(--lg-tint)),
+    rgb(8 12 14 / 0.28);
+  -webkit-backdrop-filter: blur(20px) saturate(1.7) brightness(1.08);
+  backdrop-filter: var(--lg-bf, blur(20px) saturate(1.7) brightness(1.08));
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.26),
+    inset 0 -1px 0 rgb(255 255 255 / 0.05),
+    inset 0 0 28px rgb(172 244 248 / 0.025),
+    0 0 0 1px rgb(255 255 255 / 0.055),
+    0 34px 70px -34px rgb(0 0 0 / 0.85);
+}
+
+/* Specular rim: a 1px conic-gradient border. The bright arc sits where the pointer is. */
+.lg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from 215deg at var(--mx) var(--my),
+    rgb(255 255 255 / 0.62),
+    rgb(255 255 255 / 0.04) 18%,
+    rgb(172 244 248 / 0.38) 34%,
+    rgb(255 255 255 / 0.03) 52%,
+    rgb(255 255 255 / 0.5) 78%,
+    rgb(255 255 255 / 0.04)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Glare: a soft lens flare under the pointer. Hover devices only. */
+.lg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(260px circle at var(--mx) var(--my), rgb(255 255 255 / 0.13), transparent 62%);
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out);
+  pointer-events: none;
+  z-index: 2;
+}
+@media (hover: hover) and (pointer: fine) {
+  .lg:hover::after { opacity: 1; }
+}
+
+.lg--pill { --lg-r: var(--r-pill); }
+.lg--dense { --lg-fill-a: rgb(255 255 255 / 0.06); --lg-fill-b: rgb(255 255 255 / 0.012); background: linear-gradient(150deg, var(--lg-fill-a), var(--lg-fill-b) 52%, var(--lg-tint)), rgb(8 12 14 / 0.5); }
+.lg--ice { --lg-tint: rgb(172 244 248 / 0.1); }
+.lg > * { position: relative; z-index: 1; }
+.lg > .lg-bg { position: absolute; z-index: 0; }
+
+@media (prefers-reduced-transparency: reduce) {
+  .lg {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: linear-gradient(150deg, #1a2429, #10181c);
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .lg { background: linear-gradient(150deg, #1a2429, #10181c); }
+}
+
+/* Buttons ------------------------------------------------------------------ */
+.btn {
+  --h: 56px;
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: var(--h);
+  padding: 0 26px 0 22px;
+  border-radius: var(--r-pill);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: transform 160ms var(--ease-out), box-shadow 240ms var(--ease-out), background-color 200ms ease;
+}
+.btn:active { transform: scale(0.97); }
+.btn svg { width: 18px; height: 18px; flex: none; transition: transform 280ms var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover svg { transform: translate(-3px, -3px); }
+}
+
+.btn--ice {
+  background: var(--ice);
+  color: #03181b;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.75),
+    inset 0 -3px 8px rgb(0 90 100 / 0.22),
+    0 12px 44px -10px rgb(172 244 248 / 0.5);
+}
+/* Specular sweep across the primary button. Hover only, one pass. */
+.btn--ice::after {
+  content: '';
+  position: absolute;
+  inset: -20% auto -20% 0;
+  width: 46%;
+  background: linear-gradient(100deg, transparent, rgb(255 255 255 / 0.7), transparent);
+  transform: translateX(260%) skewX(-18deg);
+  opacity: 0;
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn--ice:hover { background: #c3f8fb; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.85), inset 0 -3px 8px rgb(0 90 100 / 0.22), 0 16px 60px -8px rgb(172 244 248 / 0.7); }
+  .btn--ice:hover::after { opacity: 1; transform: translateX(-340%) skewX(-18deg); transition: transform 760ms var(--ease-out), opacity 120ms; }
+}
+
+.btn--glass { color: var(--ink); --lg-r: var(--r-pill); }
+.btn--glass.lg { overflow: visible; }
+.btn--sm { --h: 44px; padding: 0 20px 0 16px; font-size: 14px; gap: 12px; }
+.btn--sm svg { width: 15px; height: 15px; }
+
+.text-link {
+  display: inline-flex; align-items: center; gap: 10px; color: var(--ice); font-weight: 500;
+  padding-block: 8px; border-bottom: 1px solid rgb(172 244 248 / 0.3);
+  transition: border-color 200ms ease, gap 260ms var(--ease-out);
+}
+.text-link svg { width: 15px; height: 15px; }
+@media (hover: hover) and (pointer: fine) {
+  .text-link:hover { border-color: var(--ice); gap: 14px; }
+}

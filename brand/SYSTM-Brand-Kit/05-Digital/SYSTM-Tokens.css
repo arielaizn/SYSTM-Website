@@ -1,0 +1,4 @@
+@font-face{font-family:Heebo;src:url('../02-Colors-Typography/Heebo-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+@font-face{font-family:Heebo;src:url('../02-Colors-Typography/Heebo-Bold.ttf') format('truetype');font-weight:700;font-display:swap}
+:root{--systm-carbon:#080C0E;--systm-paper:#F5F7F7;--systm-ice:#ACF4F8;--systm-slate:#141C20;--systm-muted:#A8B4B8;--systm-line:#304047;--font-brand:Heebo,Arial,sans-serif;--radius-card:20px}
+.systm-button{background:var(--systm-ice);color:var(--systm-carbon);font:700 16px var(--font-brand);padding:14px 24px;border:0;border-radius:8px}.systm-button:focus-visible{outline:3px solid var(--systm-paper);outline-offset:4px}

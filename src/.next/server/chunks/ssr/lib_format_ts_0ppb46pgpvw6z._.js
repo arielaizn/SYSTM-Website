@@ -1,3 +1,0 @@
-module.exports=[81926,a=>{"use strict";let b="Asia/Jerusalem";a.s(["f",0,["new","contacted","qualified","won","lost","spam"],"y",0,{new:"חדש",contacted:"נוצר קשר",qualified:"מתאים",won:"נסגר",lost:"לא נסגר",spam:"ספאם"},"s",0,a=>new Date(a).toLocaleString("he-IL",{timeZone:b,day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"}),"g",0,function(a,c=Date.now()){let d=Math.max(0,Math.round((c-a)/1e3));if(d<60)return"לפני רגע";let e=Math.round(d/60);if(e<60)return`לפני ${e} דק׳`;let f=Math.round(e/60);if(f<24)return`לפני ${f} שעות`;let g=Math.round(f/24);return g<30?1===g?"אתמול":`לפני ${g} ימים`:new Date(a).toLocaleDateString("he-IL",{timeZone:b})}])}];
-
-//# sourceMappingURL=lib_format_ts_0ppb46pgpvw6z._.js.map

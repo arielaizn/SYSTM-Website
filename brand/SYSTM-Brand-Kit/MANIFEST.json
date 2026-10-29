@@ -1,0 +1,482 @@
+[
+  {
+    "file": "01-Logos/SYSTM-Lockup-Cyan.png",
+    "bytes": 28538,
+    "sha256": "20ec8420d4fb6e2ec68207a0107c882bc36291891414d70c575f40507a360fd4"
+  },
+  {
+    "file": "01-Logos/SYSTM-Lockup-Cyan.svg",
+    "bytes": 7654,
+    "sha256": "e95ccc6c3845f57002147e11170b8e17fc155965553218a7e69b13f06b4dcee6"
+  },
+  {
+    "file": "01-Logos/SYSTM-Lockup-Dark.png",
+    "bytes": 28281,
+    "sha256": "c6a248b4a90eb28c692ff84fdd014bcbb4a0f2535fd54c548b938bf7a8886477"
+  },
+  {
+    "file": "01-Logos/SYSTM-Lockup-Dark.svg",
+    "bytes": 7654,
+    "sha256": "c6b8311ea264f4b02bc5d771a2126b51d478a5a1e92de30715b70a09a07ac2b3"
+  },
+  {
+    "file": "01-Logos/SYSTM-Lockup-Light.png",
+    "bytes": 28309,
+    "sha256": "859784b4de634a2e5226277e3f86f94eb5d7198119c8359bdbf7c3b6e05d7d19"
+  },
+  {
+    "file": "01-Logos/SYSTM-Lockup-Light.svg",
+    "bytes": 7654,
+    "sha256": "221423942731aa1bbb147d6b7b793a5ae5a1ec13546582e42ccccbc4135f70f8"
+  },
+  {
+    "file": "01-Logos/SYSTM-Monogram-Cyan.png",
+    "bytes": 20729,
+    "sha256": "855a3f46ff0dde56fb3fdd2f9171588793f1310cf06daabacb15a3a90f8c3921"
+  },
+  {
+    "file": "01-Logos/SYSTM-Monogram-Cyan.svg",
+    "bytes": 1441,
+    "sha256": "8053123444559abaa4c60ca5d13b9bfc7116ba01b105d8da0bfd4c88a1027b4f"
+  },
+  {
+    "file": "01-Logos/SYSTM-Monogram-Dark.png",
+    "bytes": 20921,
+    "sha256": "b58b08cbea08d4ca549dd18c01857d584d6ce6925c2382286ec2d7e3709613af"
+  },
+  {
+    "file": "01-Logos/SYSTM-Monogram-Dark.svg",
+    "bytes": 1441,
+    "sha256": "8f37575ae4bb38b63dd3b9953e832ff24519128eb54a7449acb87fbb0a284d9a"
+  },
+  {
+    "file": "01-Logos/SYSTM-Monogram-Light.png",
+    "bytes": 20577,
+    "sha256": "acaea6ed91a0b7d93947281a9b77d18fd147acdf19b9eaffa139813217c791a2"
+  },
+  {
+    "file": "01-Logos/SYSTM-Monogram-Light.svg",
+    "bytes": 1441,
+    "sha256": "54a1fe853609aefa23047905c450cfba57df421dc3fbcf8c80e03e4fce735004"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-Black-1200px.png",
+    "bytes": 28376,
+    "sha256": "24d857f03f4716757ede5eec3527910c738a7ff38e98379399b61dafa87776a6"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-Black-600px.png",
+    "bytes": 13402,
+    "sha256": "3c10147a942f7d489e0dfbe27ace11dfc10cf2c1a1f33925b025e1264fdaa4a3"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-Black.pdf",
+    "bytes": 4609,
+    "sha256": "f5cf6ac62ec49a78c6df05ba2ce795b884ab66f985ad0d805bf24c951c69c02a"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-Black.png",
+    "bytes": 61765,
+    "sha256": "a445c45e562c95105c71718205316a65efb3e41de9dfce49277f9fc1bc307917"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-Black.svg",
+    "bytes": 7548,
+    "sha256": "b19f4e87fe6e567066e8d81038f9b75d4d65a670cbb345b51f5b7529814348d7"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-Ice-Cyan-1200px.png",
+    "bytes": 29330,
+    "sha256": "70bac617cb9926dea13ab0f38cdaf8afccd2af009b025507c7780722ff98d5a3"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-Ice-Cyan-600px.png",
+    "bytes": 13913,
+    "sha256": "6ddd33584f9abaedafb6b48e65928f541a745c0610fa2795fa6bd271350493dd"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-Ice-Cyan.pdf",
+    "bytes": 4606,
+    "sha256": "791d455182730c9c37c98589701d454670603eab0e43b2e9a832ecb24a0b5aa2"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-Ice-Cyan.png",
+    "bytes": 63702,
+    "sha256": "d2a9a2540c359f61df3c74deb00c108ef11f3dedb09b274a04a99f50b0f2525d"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-Ice-Cyan.svg",
+    "bytes": 7548,
+    "sha256": "fc168d434847e3c7dd23096c70d4f1300f551a2cca48849436f8255c2a261d59"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-White-1200px.png",
+    "bytes": 28133,
+    "sha256": "bccfda7a822f48f26380c859cfb58aae419032d9b58c22eb0948b713d0797655"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-White-600px.png",
+    "bytes": 13271,
+    "sha256": "8e76f66c1a3aac40b3c43fda519b7f929cd021bf63bbd60ca967531666f9b9ae"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-White.pdf",
+    "bytes": 4604,
+    "sha256": "7a301b2b04792fabd9ba621e84464092c9b646434d03fb3204fee2e017b79fac"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-White.png",
+    "bytes": 61566,
+    "sha256": "df4f49786380da7dbf4464c1be44acebfe8d91c96bb616f9a2d98e68db0e7a15"
+  },
+  {
+    "file": "01-Logos/SYSTM-Wordmark-White.svg",
+    "bytes": 7548,
+    "sha256": "744ba0b3cdb629515809f5595291543138dc420c831b484429bd9de0fae99376"
+  },
+  {
+    "file": "02-Colors-Typography/Heebo-Black.ttf",
+    "bytes": 58992,
+    "sha256": "e6eae26975e7a1aa06ca4f3b9168715eeb510ce1b6b56cf3d9740531737ccd30"
+  },
+  {
+    "file": "02-Colors-Typography/Heebo-Bold.ttf",
+    "bytes": 58664,
+    "sha256": "10abbe983c21943084b35a93670a4f7501483c21bb54cbe0f294b51ee031f0fa"
+  },
+  {
+    "file": "02-Colors-Typography/Heebo-Medium.ttf",
+    "bytes": 58372,
+    "sha256": "f3926a1b92b1e6e87a7edca97720bdf23794d16665d449977f083769ebbc04c1"
+  },
+  {
+    "file": "02-Colors-Typography/Heebo-Regular.ttf",
+    "bytes": 58128,
+    "sha256": "571a404e0be35d228a53408ad680214f2c8541322a4a1ed48cec4c8b6dad7bf6"
+  },
+  {
+    "file": "02-Colors-Typography/OFL-Heebo.txt",
+    "bytes": 4474,
+    "sha256": "866747cbccae229433e946b90fcfc457b81c33ac89e593855770851354f9e6c3"
+  },
+  {
+    "file": "02-Colors-Typography/SYSTM-Design-Tokens.json",
+    "bytes": 588,
+    "sha256": "c44dc1ff2f89a8a670d67da067cd0506642d3ea3f626ec61eafd1347cf754a36"
+  },
+  {
+    "file": "02-Colors-Typography/SYSTM-Palette.csv",
+    "bytes": 158,
+    "sha256": "1391551b707a412074e3cba2fc17f1df5e3293de081f9678a55cd470f3a1e6ed"
+  },
+  {
+    "file": "02-Colors-Typography/SYSTM-Palette.gpl",
+    "bytes": 133,
+    "sha256": "8b99cc615d92dc16dee4c094c2a77bba1503b94b8f712d5c2e22303f679602d2"
+  },
+  {
+    "file": "03-Social/SYSTM-Carousel-01-1080x1350.png",
+    "bytes": 57827,
+    "sha256": "e094463d627d6f4fcab2c970e6d5164e0938fdbd1b2c3e546d42e96fc113a967"
+  },
+  {
+    "file": "03-Social/SYSTM-Carousel-01-1080x1350.svg",
+    "bytes": 9005,
+    "sha256": "2a4c6a79c0236e0812d691333cdf77028897babb2df6155e6e7eac41aa2fc45f"
+  },
+  {
+    "file": "03-Social/SYSTM-Carousel-02-1080x1350.png",
+    "bytes": 55531,
+    "sha256": "7cba29286b5ada8de7ab0835234125c64ef9cd3ebed1e25f94e00eb3f3c8c5f3"
+  },
+  {
+    "file": "03-Social/SYSTM-Carousel-02-1080x1350.svg",
+    "bytes": 8867,
+    "sha256": "4913fd711b7c152d0f2b9322d7330c11af3c0e6813585c0b9756068fa099e998"
+  },
+  {
+    "file": "03-Social/SYSTM-Carousel-03-1080x1350.png",
+    "bytes": 53111,
+    "sha256": "b46b6d85e112db97daf5d40496e92adb07b4b38156cacb4849bf377ea52bae21"
+  },
+  {
+    "file": "03-Social/SYSTM-Carousel-03-1080x1350.svg",
+    "bytes": 8854,
+    "sha256": "6cd49b2379abbacfd758bca6f3856d70fd549fa529c407182d83da5d1412356e"
+  },
+  {
+    "file": "03-Social/SYSTM-Carousel-04-1080x1350.png",
+    "bytes": 51578,
+    "sha256": "2a4f1a64954f547110d61d46c76878143fa6471e22f145ea7a2a70d49c7996da"
+  },
+  {
+    "file": "03-Social/SYSTM-Carousel-04-1080x1350.svg",
+    "bytes": 8858,
+    "sha256": "3e95fcb486333faea7b4fb9600bcc153d905ef66c9af026b337afe5855a25d20"
+  },
+  {
+    "file": "03-Social/SYSTM-LinkedIn-Cover-1584x396.png",
+    "bytes": 307078,
+    "sha256": "bc7013a75559dbac75558fafa3320117abc6889bfcfcce207ba417e68c860e68"
+  },
+  {
+    "file": "03-Social/SYSTM-LinkedIn-Cover-1584x396.svg",
+    "bytes": 254777,
+    "sha256": "602e63652a729089e986eb0bcbead32526adfc9cfb8d5a9620add62bcc2ae960"
+  },
+  {
+    "file": "03-Social/SYSTM-Offer-1080x1350.png",
+    "bytes": 59420,
+    "sha256": "e6c5e502a4fd87816d0d3dbd962f831155a640e926ea0351b73d8cda79e1defe"
+  },
+  {
+    "file": "03-Social/SYSTM-Offer-1080x1350.svg",
+    "bytes": 9017,
+    "sha256": "33878b1b53f921fa01dd49bac8a0d6fad706a0a24f5f97df21b07fed2ba0fbac"
+  },
+  {
+    "file": "03-Social/SYSTM-Post-1080x1350.png",
+    "bytes": 612604,
+    "sha256": "6758ef58bd8dc007a3009ef694e45f4116dba71501a878b9006a0b9b81026fd1"
+  },
+  {
+    "file": "03-Social/SYSTM-Post-1080x1350.svg",
+    "bytes": 255705,
+    "sha256": "49dcad401dfadc8b3859cd838e075050975e47b6491da9d218f5dfc185ddfbd3"
+  },
+  {
+    "file": "03-Social/SYSTM-Square-1080x1080.png",
+    "bytes": 54134,
+    "sha256": "48d8b1c993148af3eda49a8095f2059ac7099d1668a77685e2a8a20233f5009f"
+  },
+  {
+    "file": "03-Social/SYSTM-Square-1080x1080.svg",
+    "bytes": 9013,
+    "sha256": "5d53c4549974f2625445659da5bd5d4a6ee14fd889eec8d99095f452e03c557d"
+  },
+  {
+    "file": "03-Social/SYSTM-Story-1080x1920.png",
+    "bytes": 668309,
+    "sha256": "f532e7524c5d1499f397e421408558025b2fd201fdca4b8cde167e298b8c2f9e"
+  },
+  {
+    "file": "03-Social/SYSTM-Story-1080x1920.svg",
+    "bytes": 255703,
+    "sha256": "7afdbc7214bae4973e0ed6f2cb4162c398b50c7400af88a535df9871111d2233"
+  },
+  {
+    "file": "03-Social/SYSTM-Testimonial-1080x1350.png",
+    "bytes": 59988,
+    "sha256": "ee066bbc4a62f70c00ba1db5041cc31fc8e8189ed555341d71dfdccf96ef0bbb"
+  },
+  {
+    "file": "03-Social/SYSTM-Testimonial-1080x1350.svg",
+    "bytes": 9017,
+    "sha256": "d34856aeb240798520c4a0b89116e38efd310698d67c25ed65340ef1c0e64610"
+  },
+  {
+    "file": "03-Social/SYSTM-YouTube-Cover-2560x1440.png",
+    "bytes": 1314931,
+    "sha256": "d75f0bcc70b459ea9f1f39c80f36a44963b711b7bc7c72e154a2678d33c21f84"
+  },
+  {
+    "file": "03-Social/SYSTM-YouTube-Cover-2560x1440.svg",
+    "bytes": 254781,
+    "sha256": "b32e6eb3e20f2a8f7c119b4fa7de9dafb1e603931678df7467b8f4926676f128"
+  },
+  {
+    "file": "04-Business/Business-Card-Back-Bleed.pdf",
+    "bytes": 10683,
+    "sha256": "d78ef0f8b918b8b34823630a1e30314595e4e96d8b9486c71dbc3af61bca4ebf"
+  },
+  {
+    "file": "04-Business/Business-Card-Back-Bleed.png",
+    "bytes": 27068,
+    "sha256": "4d739d2ba992bdabc154eb1e82dcc46ed2d4f01ba2f7d5abf56ed5dece3457eb"
+  },
+  {
+    "file": "04-Business/Business-Card-Back-Bleed.svg",
+    "bytes": 8215,
+    "sha256": "7c587afda604be839a86c39d4fa3d516b91c6ea79d27385ee355ca2c31c3725d"
+  },
+  {
+    "file": "04-Business/Business-Card-Front-Bleed.pdf",
+    "bytes": 4421,
+    "sha256": "fecc901f8e57272716229721b1101ce5785162a369c53ec00947532f4b0c0dbe"
+  },
+  {
+    "file": "04-Business/Business-Card-Front-Bleed.png",
+    "bytes": 23656,
+    "sha256": "9fdb3fe2dddd8f1ccf3ad7e7b02efe6851986bf7832b4c9751c19cc9d471eee6"
+  },
+  {
+    "file": "04-Business/Business-Card-Front-Bleed.svg",
+    "bytes": 7655,
+    "sha256": "90c40f6ba264828ecb7ccc6635d7318a25e62af75763fc0aa03c0e11c408f102"
+  },
+  {
+    "file": "04-Business/Email-Signature-Editable.html",
+    "bytes": 573,
+    "sha256": "da706e0dc8fe5bfdef22905ea8d6ac0894e841340cfc80d65c4eca63fd944b2e"
+  },
+  {
+    "file": "04-Business/Letterhead-A4-Editable.pdf",
+    "bytes": 18724,
+    "sha256": "c34b95ee4cd0e8a5991e696e80ef26c42b4ca2e7a7d8e96cfa633c1dc3ccbd9e"
+  },
+  {
+    "file": "04-Business/Letterhead-A4-Editable.png",
+    "bytes": 46648,
+    "sha256": "5013c4b98d88057cd72506aeda2787c12bffdbb8e2280768f800fb0541e9ca01"
+  },
+  {
+    "file": "04-Business/Letterhead-A4-Editable.svg",
+    "bytes": 8608,
+    "sha256": "8e18131b1daa24590e0d024f7ee4b1aa31807528381e850100e3e3040d7013b7"
+  },
+  {
+    "file": "04-Business/Proposal-Cover-A4-Editable.pdf",
+    "bytes": 17144,
+    "sha256": "0294b082c1983f33cce8572dab2c3ba7e3ade667c7c3d3ea0b667bfeea9337b6"
+  },
+  {
+    "file": "04-Business/Proposal-Cover-A4-Editable.png",
+    "bytes": 55476,
+    "sha256": "489cd8c98c00d73692e98264075eaf7453af7a956b67ced33d8e11fe38c4bbc4"
+  },
+  {
+    "file": "04-Business/Proposal-Cover-A4-Editable.svg",
+    "bytes": 8587,
+    "sha256": "9ef5a257c31d084a07d21294a672b53a60ced4a93e51cf2b000931c403f19d69"
+  },
+  {
+    "file": "05-Digital/Icon-agent.svg",
+    "bytes": 296,
+    "sha256": "f7ade88133bb3a96e42c7f6231c50e38fdabeb4c07c1ed836fc3efa88f3413dd"
+  },
+  {
+    "file": "05-Digital/Icon-analytics.svg",
+    "bytes": 282,
+    "sha256": "7f31c7eec63808853d4cc97405cd110a943115c4a24e5bc69f004bffd6daf101"
+  },
+  {
+    "file": "05-Digital/Icon-education.svg",
+    "bytes": 278,
+    "sha256": "53aa4883f334418df57f6f8f7f2072181f81b365550fbbf28457ff37ed68b9db"
+  },
+  {
+    "file": "05-Digital/Icon-integration.svg",
+    "bytes": 273,
+    "sha256": "d83db8fbb21722ec70412069dc289184cc89c7c15d1d6feacabe854d1ebe1d50"
+  },
+  {
+    "file": "05-Digital/Icon-support.svg",
+    "bytes": 313,
+    "sha256": "be4c313e0b149a25bd77af91910dbdbd6a3b2966f3811fdc9c11ecf42cc84fda"
+  },
+  {
+    "file": "05-Digital/Icon-workflow.svg",
+    "bytes": 276,
+    "sha256": "1a1dd7cf4d04eb046a105ed847a2a6a21866f28b1dd290c7836a94f5d7357c72"
+  },
+  {
+    "file": "05-Digital/SYSTM-Components-Preview.html",
+    "bytes": 2157,
+    "sha256": "0bdbd7f1179aef85ddbff0cf4d9970e39bf33fb8b2889bd91a5d09e93f1ed7f5"
+  },
+  {
+    "file": "05-Digital/SYSTM-Tokens.css",
+    "bytes": 691,
+    "sha256": "b04bca89f060f182ee9996c248424d7980d2c00a81c4333e88bded7cc3122e15"
+  },
+  {
+    "file": "05-Digital/favicon.ico",
+    "bytes": 2912,
+    "sha256": "4291fc0fdb77268709a4322f39654345d9a8a9e5b0c3f71b24618a2b365d632b"
+  },
+  {
+    "file": "05-Digital/icon-16.png",
+    "bytes": 373,
+    "sha256": "1e293d43190fe95fd3bce437eadacda57fe4458cdd29c7529b001dd6d335870c"
+  },
+  {
+    "file": "05-Digital/icon-180.png",
+    "bytes": 3163,
+    "sha256": "2ac09bc76c30c56f69e5ba48ec60794a0f7204c610614ecc9d86df9f7132dc80"
+  },
+  {
+    "file": "05-Digital/icon-192.png",
+    "bytes": 3415,
+    "sha256": "b5fc260ef471034f921b8c898fcef7c56ebc09a3d9af3724d6d9fda6b2861d37"
+  },
+  {
+    "file": "05-Digital/icon-32.png",
+    "bytes": 624,
+    "sha256": "e0a02b48de2f6c77b48d68147a46697fdde607e9f86be690aadb3d1b3c15ecfe"
+  },
+  {
+    "file": "05-Digital/icon-48.png",
+    "bytes": 869,
+    "sha256": "09ef875aedf9848d268f5590d46230c7b7fb5156abcd2d5e8f3efd673bd2db1e"
+  },
+  {
+    "file": "05-Digital/icon-512.png",
+    "bytes": 9619,
+    "sha256": "e8dea89e17fd3664f9bd2ad07c6d85f85e446c1e1555c20c60f20215acdb7a1e"
+  },
+  {
+    "file": "05-Digital/site.webmanifest",
+    "bytes": 339,
+    "sha256": "a836111cf31274b653f6baadf21e5d24ca11c559648f89e143dd2acb98aef266"
+  },
+  {
+    "file": "06-Imagery/Approved-Campaign-Reference.jpg",
+    "bytes": 281380,
+    "sha256": "e20256d4eacaeb9cbd7a840d2f6c55d3cd5c375b6cb7d7240a57a5800561a2d4"
+  },
+  {
+    "file": "06-Imagery/SYSTM-Brand-Applications-AI.png",
+    "bytes": 2189477,
+    "sha256": "1046e4e8a41772aefc674025aaf9d41ca0169baee50a3366ae419d42d5310df6"
+  },
+  {
+    "file": "06-Imagery/SYSTM-Glass-Systems-Hero.jpg",
+    "bytes": 185142,
+    "sha256": "3ba46f4ea063647470730807ff5887ef9e3b6dff535a4e9fcc086114520f3835"
+  },
+  {
+    "file": "06-Imagery/SYSTM-Glass-Systems-Hero.png",
+    "bytes": 1689318,
+    "sha256": "f259d6462c6635c1220dfa7c4e961eb39b614746456694313f3b5f97d420811f"
+  },
+  {
+    "file": "07-Guidelines/Brand-Copy-HE.txt",
+    "bytes": 908,
+    "sha256": "6819aeba44dcdaa112fcdf30b580b33150574c16363cdc59f59dbf745073487e"
+  },
+  {
+    "file": "07-Guidelines/Create-Image-Prompts.txt",
+    "bytes": 1280,
+    "sha256": "0501681fe53714ee3839d61d154f6dad7ce9d3ec64e0cc5692d8249064c53290"
+  },
+  {
+    "file": "07-Guidelines/SYSTM-Brand-Guidelines-HE.pdf",
+    "bytes": 4275687,
+    "sha256": "3ae33954886fdafedf42c7eb4395824792f38fb046753074c7094c8cb219b0b7"
+  },
+  {
+    "file": "START-HERE-HE.md",
+    "bytes": 3660,
+    "sha256": "9f18d77cb391caf5ff8c85827573ad1048bb54ff786909f93ccd9437c899d129"
+  },
+  {
+    "file": "START-HERE.html",
+    "bytes": 6266,
+    "sha256": "919ebe35869966964aa14205198eeb34120bdd2bf6cfb2a6f0e242de6fc5774a"
+  },
+  {
+    "file": "SYSTM-Kit-Overview.jpg",
+    "bytes": 289821,
+    "sha256": "397d3003439c4abcf4a4df5d6d5142a15419ade96445b1f4a12998367f10a81c"
+  }
+]

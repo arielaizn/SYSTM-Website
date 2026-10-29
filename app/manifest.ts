@@ -1,0 +1,19 @@
+import type { MetadataRoute } from 'next';
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: 'SYSTM',
+    short_name: 'SYSTM',
+    description: 'סוכני AI, אוטומציות והדרכות מעשיות לעסקים.',
+    lang: 'he',
+    dir: 'rtl',
+    start_url: '/',
+    display: 'standalone',
+    background_color: '#080C0E',
+    theme_color: '#080C0E',
+    icons: [
+      { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+  };
+}

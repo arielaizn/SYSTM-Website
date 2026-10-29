@@ -1,0 +1,130 @@
+/* Admin on phones: the layout of a native app. Bottom tab bar, bottom sheets, swipeable cards, pull-to-refresh.
+   Loaded after admin.css, so equal-specificity rules here win. Everything respects the notch and home indicator. */
+
+/* Shown only on phones. */
+.ad-tabbar, .ad-sheet, .ad-ptr, .ad-mcards, .ad-grab { display: none; }
+.ad-pwa__ok { display: flex; align-items: center; gap: 8px; color: var(--ad-ok); font-size: 14px; }
+.ad-pwa__ok svg { width: 18px; height: 18px; }
+.ad-muted { color: var(--ad-muted); font-size: 14px; }
+
+html:has(.ad) { overscroll-behavior-y: contain; }
+
+/* Touch screens: every control is at least 44px. */
+@media (pointer: coarse) {
+  .ad-btn { min-height: 44px; }
+  .ad-btn--sm { min-height: 42px; }
+  .ad-btn--icon { width: 44px; min-height: 44px; }
+  .ad-tab { min-height: 42px; }
+  .ad-check { width: 22px; height: 22px; }
+}
+
+@media (max-width: 900px) {
+  .ad-side { display: none; }
+
+  /* Header: below the status bar, smaller title. */
+  .ad-main { padding-inline: 16px; padding-bottom: calc(104px + env(safe-area-inset-bottom)); }
+  .ad-top { padding-top: calc(env(safe-area-inset-top) + 16px); }
+  .ad-top h1 { font-size: 24px; }
+
+  /* Tab bar */
+  .ad-tabbar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    position: fixed;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 50;
+    padding: 6px 10px calc(env(safe-area-inset-bottom) + 6px);
+    background: rgb(10 16 19 / 0.82);
+    -webkit-backdrop-filter: blur(22px) saturate(1.6);
+    backdrop-filter: blur(22px) saturate(1.6);
+    border-top: 1px solid var(--ad-line);
+    transition: transform 240ms var(--ease-drawer, cubic-bezier(0.32, 0.72, 0, 1));
+  }
+  /* The keyboard is open: the tab bar gets out of the way. */
+  .ad:has(input:focus, textarea:focus, select:focus) .ad-tabbar { transform: translateY(110%); }
+  .ad-tab-i {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 3px;
+    min-height: 54px;
+    padding: 6px 4px;
+    border-radius: 16px;
+    font-size: 11px;
+    line-height: 1.2;
+    color: var(--ad-muted);
+    transition: color 140ms ease, background-color 160ms ease, transform 140ms var(--ease-out, ease-out);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .ad-tab-i svg { width: 24px; height: 24px; }
+  .ad-tab-i:active { transform: scale(0.93); }
+  .ad-tab-i[aria-current='page'] { color: var(--ad-ice); background: rgb(172 244 248 / 0.1); }
+  .ad-tab-i em { position: absolute; top: 3px; inset-inline-start: calc(50% + 6px); min-width: 18px; padding: 0 5px; text-align: center; font-style: normal; font-size: 11px; line-height: 18px; font-weight: 700; border-radius: 99px; background: var(--ad-ice); color: #04181a; box-shadow: 0 0 0 2px #0a1013; }
+
+  /* Bottom sheets: the "more" menu and the lead drawer. */
+  .ad-grab { display: block; position: sticky; top: 0; z-index: 3; height: 30px; margin-inline: -18px; touch-action: none; cursor: grab; background: inherit; border-radius: 26px 26px 0 0; }
+  .ad-grab::before { content: ''; position: absolute; top: 11px; left: 50%; width: 40px; height: 5px; margin-left: -20px; border-radius: 3px; background: #3a4f58; }
+  .ad-sheet { display: flex; align-items: flex-end; position: fixed; inset: 0; z-index: 80; }
+  .ad-sheet__scrim { position: absolute; inset: 0; background: rgb(3 6 8 / 0.62); animation: ad-fade 200ms ease-out; }
+  .ad-sheet__panel { position: relative; width: 100%; max-height: min(86dvh, 640px); overflow: auto; overscroll-behavior: contain; background: #0d1519; border-radius: 26px 26px 0 0; border-top: 1px solid var(--ad-line-2); padding: 0 18px calc(env(safe-area-inset-bottom) + 20px); animation: ad-sheet-up 380ms var(--ease-drawer, cubic-bezier(0.32, 0.72, 0, 1)) both; box-shadow: 0 -30px 60px -20px rgb(0 0 0 / 0.7); }
+  .ad-sheet__panel .ad-grab { background: #0d1519; }
+  .ad-sheet__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .ad-sheet__item { display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 10px 14px; border-radius: 16px; background: var(--ad-panel-2); border: 1px solid var(--ad-line); font-size: 14.5px; color: var(--ad-ink); transition: transform 140ms var(--ease-out, ease-out), border-color 140ms; }
+  .ad-sheet__item svg { width: 22px; height: 22px; flex: none; color: var(--ad-ice); }
+  .ad-sheet__item:active { transform: scale(0.97); }
+  .ad-sheet__item[aria-current='page'] { border-color: rgb(172 244 248 / 0.5); }
+  .ad-sheet__install { margin-top: 16px; padding: 14px; border-radius: 16px; border: 1px dashed var(--ad-line-2); }
+  .ad-sheet__foot { display: flex; gap: 10px; margin-top: 14px; }
+  .ad-sheet__foot > * { flex: 1; }
+  .ad-sheet__foot form .ad-btn { width: 100%; }
+  .ad-sheet__foot .ad-btn { width: 100%; }
+  .ad-sheet__note { margin-top: 12px; text-align: center; font-size: 13px; color: var(--ad-ice); }
+
+  .ad-drawer { align-items: flex-end; }
+  .ad-drawer__scrim { animation: ad-fade 200ms ease-out; }
+  .ad-drawer__panel { width: 100%; height: auto; max-height: calc(100dvh - env(safe-area-inset-top) - 18px); border-inline-end: 0; border-top: 1px solid var(--ad-line-2); border-radius: 26px 26px 0 0; padding: 0 18px calc(env(safe-area-inset-bottom) + 28px); overscroll-behavior: contain; animation: ad-sheet-up 380ms var(--ease-drawer, cubic-bezier(0.32, 0.72, 0, 1)) both; box-shadow: 0 -30px 60px -20px rgb(0 0 0 / 0.7); }
+  .ad-drawer__panel .ad-grab { background: #0d1519; }
+  .ad-drawer__head { margin-top: 2px; }
+
+  /* Pull to refresh */
+  .ad-ptr { display: grid; place-items: center; position: fixed; z-index: 90; top: calc(env(safe-area-inset-top) + 8px); left: 50%; width: 42px; height: 42px; border-radius: 50%; background: var(--ad-panel-2); border: 1px solid var(--ad-line-2); color: var(--ad-muted); opacity: 0; transform: translate(-50%, -56px); pointer-events: none; box-shadow: 0 10px 30px -8px rgb(0 0 0 / 0.8); }
+  .ad-ptr svg { width: 20px; height: 20px; }
+  .ad-ptr[data-ready='true'] { color: var(--ad-ice); border-color: rgb(172 244 248 / 0.5); }
+  .ad-ptr[data-spin='true'] svg { animation: ad-spin 700ms linear infinite; }
+
+  /* Toasts sit above the tab bar. */
+  .ad-toasts { bottom: calc(86px + env(safe-area-inset-bottom)) !important; }
+}
+
+@keyframes ad-sheet-up { from { transform: translateY(100%); } }
+@keyframes ad-spin { to { transform: rotate(360deg); } }
+
+/* Phones: forms and lists. 16px inputs stop iOS from zooming on focus. */
+@media (max-width: 760px) {
+  .ad-input, .ad-select, .ad-textarea { font-size: 16px; }
+  .ad-mcards { display: grid; list-style: none; gap: 10px; padding: 0; margin: 0; }
+  .ad-mcards ~ .ad-tablewrap { display: none; }
+
+  .ad-mcard { position: relative; border-radius: 18px; overflow: hidden; background: var(--ad-panel); }
+  .ad-mcard__actions { position: absolute; inset-block: 0; inset-inline-start: 0; width: 168px; display: flex; }
+  .ad-mcard__act { flex: 1; display: grid; justify-items: center; align-content: center; gap: 4px; font-size: 12px; font-weight: 700; color: #04181a; }
+  .ad-mcard__act svg { width: 22px; height: 22px; }
+  .ad-mcard__act[data-k='call'] { background: var(--ad-ice); }
+  .ad-mcard__act[data-k='wa'] { background: #68e3a8; }
+  .ad-mcard__act[data-k='done'] { background: #ffd28a; }
+  .ad-mcard__face { position: relative; z-index: 1; display: grid; gap: 6px; width: 100%; text-align: start; padding: 14px 16px; border-radius: 18px; background: var(--ad-panel); border: 1px solid var(--ad-line); touch-action: pan-y; will-change: transform; -webkit-tap-highlight-color: transparent; }
+  .ad-mcard[data-status='new'] .ad-mcard__face { border-color: rgb(172 244 248 / 0.42); }
+  .ad-mcard__top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .ad-mcard__top b { font-size: 16px; font-weight: 700; }
+  .ad-mcard__meta { color: var(--ad-muted); font-size: 13px; }
+  .ad-mcard__msg { color: #c3d0d4; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ad-mcard__foot { display: flex; justify-content: space-between; gap: 10px; color: #70838a; font-size: 12.5px; }
+  .ad-mcard__face:active { background: #121c21; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ad-sheet__panel, .ad-drawer__panel { animation: none; }
+}

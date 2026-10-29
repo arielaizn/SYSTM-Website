@@ -1,9 +1,142 @@
-# SYSTM Website (build output)
+# SYSTM: האתר
 
-This repository holds the **compiled production build** exported from the Vercel deployment of `systm-site`.
-It is not the source code: no `src/`, no `convex/`, no `node_modules`, and the serverless functions (lambdas) are not included.
+אתר שיווק, תוכן ויצירת קשר ל־SYSTM. Next.js 16 (App Router, TypeScript), CSS ידני, Three.js לרקע התלת־ממדי. 18 נתיבים, עברית ו־RTL, בלי CMS ובלי בסיס נתונים.
 
-- `src/.next` and `src/.vercel/output`: build output
-- `src/.env.example`: environment variable reference (no values)
+הבנייה נעשתה מאפס לפי האפיון ב־`docs/` ולפי הברנד קיט ב־`brand/`. הקוד של האתר שהגיע בחבילה לא שימש.
 
-Secrets (`ADMIN_API_KEY`, `ADMIN_SESSION_SECRET`, ...) are intentionally not included.
+## הרצה
+
+```bash
+npm install
+npm run dev          # http://localhost:3000
+npm run build && npm start
+npm test             # 37 בדיקות: לוגיקת פניות, חוזה ה־API, חתימת סשן, סיסמה, הגבלת כניסות ונקודת הרענון
+npm run qa:security  # בדיקת אבטחה מול Convex (דורש CONVEX_URL ו־ADMIN_API_KEY)
+npm run qa:crawl     # שרת רץ על 3000: סורק כל קישור, H1, lang/dir, 404 אמיתי
+npm run typecheck
+```
+
+דורש Node 22.18 ומעלה. הבדיקות רצות על type stripping של Node, בלי כלי בנייה נוסף.
+
+`?snap` בסוף כתובת מבטל את האינטרו ואת הקפיצים של הרקע התלת־ממדי. זה נועד לצילומי מסך בדיקה על מחשב בלי כרטיס מסך.
+
+## מה צריך להגדיר לפני השקה
+
+הכול ב־`.env.example` ובקובץ `lib/config.ts`.
+
+| נושא | מצב עכשיו | מה משנים |
+|---|---|---|
+| דומיין | לא מוגדר, האתר noindex ו־`robots.txt` חוסם | `NEXT_PUBLIC_SITE_URL=https://...` (נוצרים canonical, sitemap, og:url) |
+| וואטסאפ וטלפון | 053-412-2548, נמסר בשיחה | לאשר שזה המספר העסקי, אחרת `lib/config.ts` |
+| אימייל | לא מוצג | `email` ב־`lib/config.ts` |
+| רשתות חברתיות | אין | `socials` ב־`lib/config.ts` ותצוגה בפוטר |
+| קליטת פניות | הטופס מכין הודעת WhatsApp ואומר במפורש שלא נשלח | ראו למטה |
+| המלצות, לוגואים, מחירים, תוצאות | לא מוצגים. לא נמסרו | להוסיף רק עם מקור והרשאה |
+
+### מצב webhook (אופציונלי)
+
+1. `NEXT_PUBLIC_CONTACT_MODE=webhook`
+2. `LEAD_WEBHOOK_URL` (https), ואם צריך `LEAD_WEBHOOK_TOKEN`
+3. `ALLOWED_ORIGIN` לכתובת האתר המדויקת, בלי סלאש בסוף
+4. לבדוק קליטה אצל הספק עם נתוני בדיקה. `/api/leads` מחזיר הצלחה רק אחרי שהספק ענה 2xx.
+
+מדיניות הפרטיות מתאימה את עצמה למצב. ההגבלה על קצב בקשות היא בזיכרון, לשרת בודד. לפני ריבוי מופעים צריך מגביל משותף.
+
+## פריסה
+
+האתר חי ב־https://systm-site.vercel.app (פרויקט Vercel `systm-site`) ומחובר ל־Convex של פרודקשן (פרויקט `systm-website`, השם המדויק של הפריסה בדאשבורד של Convex). הדומיין `getsystm.com` שייך לאתר הקודם בפרויקט `systm-website` ולא נגעו בו. כשמחליטים לעבור לדומיין, מחברים אותו לפרויקט `systm-site` ומגדירים `NEXT_PUBLIC_SITE_URL` ו־`ALLOWED_ORIGIN`. עד אז האתר נשאר `noindex`.
+
+משתני הסביבה בפרויקט (Production): `CONVEX_URL`, `ADMIN_API_KEY` (אותו ערך גם ב־Convex), `ADMIN_SESSION_SECRET`, `ADMIN_PASSWORD_HASH`, `ALLOWED_ORIGIN`, `NEXT_PUBLIC_CONTACT_MODE=webhook`, `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`.
+
+פריסה חוזרת. התיקייה יושבת בתוך ריפו git של ספריית הבית, ו־Vercel שולח את מחבר ה־commit האחרון ועלול לחסום את הפריסה, לכן בונים מקומית ומעלים מתיקייה בלי git:
+
+1. `vercel.json` מקבע `framework: nextjs`. פרויקט חדש בלי זה נבנה כאתר סטטי ומעלה רק את `public/`.
+2. מזיזים את `.env.local` הצידה (הוא מצביע ל־Convex המקומי, ו־Next עוקב אחרי קבצי env לתוך הפונקציות), ומעבירים ב־shell את `NEXT_PUBLIC_*`, `CONVEX_URL` ו־`ADMIN_API_KEY`.
+3. `vercel pull --yes --environment=production` ואחריו `vercel build --prod`.
+4. מעתיקים `.vercel/project.json` ו־`.vercel/output` לתיקייה מחוץ לספריית הבית, מקשרים אליה סימלינקים לשאר הרשומות בפרויקט (בלי `.git`, `.vercel` ו־`.env*`, ועם עותק אמיתי של `.env.example`), ומריצים `vercel deploy --prebuilt --prod --yes`.
+5. אחרי פריסה: `POST /api/revalidate/` עם `x-admin-key`, וסריקה עם `npm run qa:crawl` על הכתובת החיה.
+
+## איך האתר בנוי
+
+```
+app/(site)/       עמודי האתר הציבורי
+app/admin/        ממשק הניהול (כניסה, פעולות שרת, מסכים)
+app/              metadata, sitemap, robots, manifest, /api/leads
+convex/           סכמה ופונקציות Convex
+proxy.ts          שער ראשוני ל־/admin
+components/
+  stage/          הרקע התלת־ממדי (Three.js): scene.ts, states.ts, GlassStage.tsx
+  sections/       סקשנים של הבית ושל העמודים הפנימיים
+  diagrams/       חמש דיאגרמות חיות, אחת לכל שירות
+  layout/         כותרת (תפריט־על), פוטר, חיפוש כללי
+  motion/ ui/     טשטוש־לחדות, מתג תנועה, כפתורים, קישור עם מעבר עמודים
+lib/              תוכן, הגדרות, אימות פניות, SEO, מנוע התנועה, ליקוויד גלאס
+styles/           base, glass, motion, layout, home, pages
+tests/ scripts/   בדיקות וסורק
+docs/ brand/      האפיון המקורי והברנד קיט
+```
+
+### הרקע התלת־ממדי
+
+קנבס אחד קבוע מאחורי כל העמודים: שלושה לוחות זכוכית וקו תכלת שמשרטט את ה־S של הסימן. לכל סקשן אפשר לבחור פוזה עם `data-stage="hero|approach|solutions|demo|process|founder|guides|faq|cta|footer|quiet|reading"`. הפוזות ב־`components/stage/states.ts`. אפשר גם `data-stage-scrub="filament,yaw"` כדי שהגלילה תדליק את הקו. בלי WebGL מוצגת תמונת הברנד, ובמצב תנועה כבויה הרקע לא זז.
+
+### ליקוויד גלאס
+
+מחלקה אחת, `.lg`. בכרום נוסף שבירת אור אמיתית: `data-refract` על אלמנט בונה מפת הזזה ומזין אותה ל־`backdrop-filter: url()`. בספארי ובפיירפוקס נשאר טשטוש עם שפה ספקולרית. אסור לשים `.lg` בתוך אלמנט עם `filter` או `opacity`, כי אז הוא לא רואה את מה שמאחוריו. לכן ה־reveal יושב על האלמנט עצמו.
+
+### טשטוש בגלילה
+
+מ־`docs/04`: טשטוש 8px ושקיפות 0 עד חדות ושקיפות 1, 800ms, כניסה ב־30% נראות וחזרה בכניסה מחדש. מכבד `prefers-reduced-motion`, יש מתג כיבוי בכותרת, ובלי JavaScript הכול גלוי. הלוגיקה ב־`lib/motion.ts`.
+
+## ממשק ניהול
+
+`/admin`: לידים, עריכת תוכן האתר, הגדרות והודעה בראש האתר. הנתונים ב־Convex, והכניסה בסיסמה אחת.
+
+מה יש בו:
+
+| מסך | מה עושים |
+|---|---|
+| סקירה | לידים ממתינים, מגמה של 30 יום, אחוז סגירה, זמן עד מענה ראשון, לידים שמחכים יותר מ־24 שעות |
+| לידים | טבלה ולוח עם גרירה בין סטטוסים, חיפוש, פעולות בכמות, הערות, תגיות, וואטסאפ וחיוג בלחיצה, ליד ידני, ייצוא CSV. פניות כפולות מסומנות לבד |
+| שירותים, מדריכים, שאלות נפוצות | עריכה מלאה, יצירה, הסתרה, סדר, טיוטות. האתר מתעדכן מיד אחרי שמירה |
+| הגדרות ובאנר | טלפון, וואטסאפ, אימייל, רשתות, תיאור האתר והודעה בראש כל הדפים |
+| יומן פעולות, גיבוי וייבוא, אבטחה | מי שינה מה ומתי, גיבוי JSON מלא ושחזור, יציאה מכל המכשירים |
+
+### במובייל ובהתקנה כאפליקציה
+
+מסך הכניסה והניהול בנויים לטלפון: סרגל ניווט תחתון, תפריט ״עוד״ וחלון פרטי ליד שנפתחים מלמטה וגוררים כלפי מטה כדי לסגור, כרטיסי לידים עם החלקה לחיוג, וואטסאפ וסימון ״טופל״, משיכה לרענון, שדות של 16px (בלי זום באייפון), יעדי מגע של 44px והתחשבות ב־notch ובמקלדת. `/admin` ניתן להתקנה כאפליקציה (manifest ו־service worker בטווח `/admin/`), ובמסך ״אבטחה והתראות״ מפעילים התראת דחיפה על כל ליד חדש (Web Push, מפתחות VAPID). באייפון ההתראות עובדות רק אחרי הוספה למסך הבית. סמל האפליקציה מציג את מספר הלידים החדשים.
+
+### ניהול מתוך Claude Code ו־Codex
+
+הפלאגין `arielaizn/systm-admin-plugin` (פרטי) מנהל את האתר מתוך השיחה דרך שרת MCP: לידים, שירותים, מדריכים, שאלות נפוצות, הגדרות, באנר וגיבוי. שמירת תוכן דרכו מרעננת את האתר דרך `POST /api/revalidate/`, שדורש את `ADMIN_API_KEY` בכותרת `x-admin-key`.
+
+### הפעלה מקומית
+
+```bash
+npx convex dev            # פעם ראשונה: להתחבר ולבחור פרויקט (או להמשיך בלי חשבון, מקומי)
+```
+
+1. `npx convex env set ADMIN_API_KEY <מפתח אקראי של 32 תווים ומעלה>`
+2. ב־`.env.local`: `CONVEX_URL`, אותו `ADMIN_API_KEY`, `ADMIN_SESSION_SECRET` ו־`ADMIN_PASSWORD_HASH` (ראו `.env.example`; hash נוצר עם `npm run admin:hash -- "הסיסמה"`)
+3. `npm run dev`, ואז `/admin`. בכניסה הראשונה לוחצים על ״ייבוא התוכן הקיים לעריכה״, והתוכן המובנה של האתר עובר ל־Convex בלי לשנות איך האתר נראה.
+
+כדי שפניות מהטופס ייכנסו לניהול: `NEXT_PUBLIC_CONTACT_MODE=webhook` ו־`ALLOWED_ORIGIN`. `/api/leads` שומר ב־Convex, ואם הוגדר גם `LEAD_WEBHOOK_URL` מעביר גם אליו. הצלחה מוחזרת רק אם לפחות יעד אחד קלט.
+
+### פרודקשן
+
+1. `npx convex deploy`, ו־`npx convex env set ADMIN_API_KEY <...> --prod`
+2. ב־Vercel: `CONVEX_URL`, `ADMIN_API_KEY`, `ADMIN_SESSION_SECRET`, `ADMIN_PASSWORD_HASH`, `ALLOWED_ORIGIN`, `NEXT_PUBLIC_CONTACT_MODE=webhook`
+3. סיסמה של ספרות בלבד חלשה אם ה־hash יודלף. מומלצת סיסמה ארוכה עם אותיות.
+
+### איך הוא מוגן
+
+- כל פונקציית Convex של הניהול דורשת מפתח שרק שרת האתר מכיר. `npm run qa:security` מוכיח שבלי המפתח אי אפשר לקרוא ולא לכתוב דבר, ושהשאילתה הציבורית מחזירה רק תוכן מפורסם.
+- עוגיית הכניסה חתומה, `httpOnly`, `SameSite=Strict`, תקפה ל־`/admin` בלבד ל־12 שעות, ובכל בקשה נבדקת מול גרסת סשן ב־Convex.
+- חמישה כישלונות כניסה נועלים כתובת ל־15 דקות. ההגבלה בזיכרון של שרת בודד.
+- כל `/admin` מסומן noindex. הפעולות שומרות רק אחרי בדיקת סשן, וגם הפעולות עצמן (server actions) בודקות אותו.
+- אם Convex לא זמין, האתר הציבורי חוזר לתוכן המובנה ולא נשבר.
+
+## הערות
+
+- `docs/` הוא האפיון המקורי. חלק מהקבצים שם מצביעים על מבנה התיקיות של האתר הישן (`site/src/...`) ולא על האתר הזה.
+- שני משפטי מפתח מהאפיון (״העסק שלך לא צריך עוד כלי. הוא צריך שהדברים יתחברו״ ו־״פחות עומס. יותר עסק״) נשארו כמו שהם, כי הם המותג. הראשון בנוי כתקבולת שלילית, ואם רוצים לשכתב אותו זה בקובץ אחד: `components/sections/Approach.tsx`.
