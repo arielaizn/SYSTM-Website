@@ -1,0 +1,151 @@
+{
+  "app": {
+    "[project]/app/(site)/about/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/(site)/accessibility/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/(site)/contact/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/(site)/knowledge/[slug]/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/(site)/knowledge/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/(site)/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/(site)/privacy/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/(site)/process/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/(site)/services/[slug]/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/(site)/services/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/(site)/workshops/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/_not-found/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/admin/(panel)/activity/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/admin/(panel)/articles/[id]/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/admin/(panel)/articles/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/admin/(panel)/data/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/admin/(panel)/faqs/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/admin/(panel)/leads/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/admin/(panel)/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/admin/(panel)/security/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/admin/(panel)/services/[id]/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/admin/(panel)/services/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/admin/(panel)/settings/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ],
+    "[project]/app/admin/login/page": [
+      "static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2",
+      "static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2",
+      "static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2",
+      "static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}

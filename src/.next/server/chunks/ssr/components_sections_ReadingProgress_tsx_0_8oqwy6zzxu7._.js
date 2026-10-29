@@ -1,0 +1,3 @@
+module.exports=[27255,a=>{"use strict";var b=a.i(87924),c=a.i(72131);a.s(["ReadingProgress",0,function(){let a=(0,c.useRef)(null);return(0,c.useEffect)(()=>{let b=0,c=()=>{b=0;let c=document.documentElement.scrollHeight-innerHeight,d=c>0?Math.min(1,Math.max(0,scrollY/c)):0;a.current&&(a.current.style.transform=`scaleX(${d})`)},d=()=>{b||(b=requestAnimationFrame(c))};return c(),addEventListener("scroll",d,{passive:!0}),addEventListener("resize",d),()=>{removeEventListener("scroll",d),removeEventListener("resize",d),b&&cancelAnimationFrame(b)}},[]),(0,b.jsx)("div",{className:"reading","aria-hidden":"true",children:(0,b.jsx)("div",{ref:a})})}])}];
+
+//# sourceMappingURL=components_sections_ReadingProgress_tsx_0_8oqwy6zzxu7._.js.map

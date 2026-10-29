@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,31179,e=>{"use strict";let o={anchors:new Float32Array(6),hero:0,ready:!1,drive:{filament:-1,glow:0,dim:0,kick:0}};e.s(["f",0,o])}]);

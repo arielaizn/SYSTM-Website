@@ -1,0 +1,31 @@
+3:"$Sreact.fragment"
+4:"/_next/static/chunks/0umf92h1sb77c.js"
+5:I[39756,["$4"],"default"]
+6:I[37457,["$4"],"default"]
+b:"/_next/static/chunks/1hojjvlr144l3.js"
+c:"/_next/static/chunks/27q58f6cv574r.js"
+d:"/_next/static/chunks/08j0vd3kmmlx2.js"
+e:I[11708,["$4","$b","$c","$d"],"SmartLink"]
+f:I[73075,["$4","$b","$c","$d"],"KnowledgeList"]
+10:I[97367,["$4"],"OutletBoundary"]
+11:"$Sreact.suspense"
+14:"ViewportBoundary"
+15:I[97367,["$4"],"$14"]
+16:"MetadataBoundary"
+17:I[97367,["$4"],"$16"]
+18:I[27201,["$4"],"IconMark"]
+8:X
+8:C
+9:X
+a:[["children",{"s":"__PAGE__","h":160,"d":{"r":["$","$3","c",{"children":[["$","main",null,{"id":"main","children":[["$","script",null,{"type":"application/ld+json","dangerouslySetInnerHTML":{"__html":"{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"SYSTM\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"ידע מעשי\"}]}"}}],["$","section",null,{"className":"page-hero container","data-stage":"quiet","children":[["$","nav",null,{"className":"crumbs","aria-label":"נתיב","data-reveal":"","style":{"--d":"0ms"},"children":[["$","span","SYSTM",{"children":[["$","$Le",null,{"href":"/","children":"SYSTM"}],["$","i",null,{"aria-hidden":"true","children":"/"}]]}],["$","span","ידע מעשי",{"children":[["$","span",null,{"aria-current":"page","children":"ידע מעשי"}],null]}]]}],null,["$","p",null,{"className":"eyebrow","data-reveal":"","style":{"--d":"0ms"},"children":[["$","span",null,{"className":"dot"}],["$","bdi",null,{"children":"KNOWLEDGE"}]," / ","ידע מעשי"]}],["$","h1",null,{"className":"h-xl page-hero__title","data-reveal":"","style":{"--d":"60ms"},"children":["להבין את התהליך.",["$","br",null,{}],["$","em",null,{"children":"לבחור את הצעד הבא."}]]}],["$","p",null,{"className":"lead","data-reveal":"","style":{"--d":"120ms"},"children":"מדריכים קצרים שמחברים בין רעיונות לבין החלטות בעבודה."}],null]}],["$","section",null,{"className":"section container","children":["$","$Lf",null,{}]}],["$","section",null,{"className":"cta container","data-stage":"cta","children":[["$","p",null,{"className":"eyebrow","data-reveal":"","style":{"--d":"0ms"},"children":[["$","span",null,{"className":"dot"}],["$","bdi",null,{"children":"NEXT"}]," / מתחילים בתהליך אחד"]}],["$","h2",null,{"className":"cta__title","data-reveal":"","style":{"--d":"60ms"},"children":["מה תקוע",["$","br",null,{}],["$","em",null,{"children":"בעסק שלך?"}]]}],["$","p",null,{"className":"cta__text","data-reveal":"","style":{"--d":"120ms"},"children":"ספרו לנו, ונבחר יחד את הצעד הראשון."}],["$","div",null,{"className":"cta__row","children":[["$","$Le",null,{"className":"btn btn--ice","href":"/contact/","data-reveal":"","style":{"--d":"180ms"},"children":[["$","span",null,{"children":"בואו נדבר"}],["$","svg",null,{"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":1.7,"strokeLinecap":"round","strokeLinejoin":"round","aria-hidden":true,"focusable":"false","children":["$","path",null,{"d":"M17 17 7 7M7 15V7h8"}]}]]}],["$","a",null,{"className":"btn btn--glass lg lg--pill","href":"https://wa.me/972534122548","target":"_blank","rel":"noopener noreferrer","data-reveal":"","style":{"--d":"240ms"},"data-refract":"14","children":[["$","span",null,{"children":"וואטסאפ ישיר"}],["$","svg",null,{"viewBox":"0 0 24 24","fill":"none","stroke":"currentColor","strokeWidth":1.7,"strokeLinecap":"round","strokeLinejoin":"round","aria-hidden":true,"focusable":"false","children":[["$","path",null,{"d":"M4 20l1.2-4.1A8 8 0 1 1 8.2 19z"}],["$","path",null,{"d":"M9.5 8.7c.3 2.6 2.6 4.8 5.3 5.4l1-1.2-1.9-1-.8.7a4 4 0 0 1-1.9-1.9l.7-.8-1-1.9z"}]]}]]}]]}]]}]]}],[["$","script","script-0",{"src":"/_next/static/chunks/08j0vd3kmmlx2.js","async":true}]],["$","$L10",null,{"children":["$","$11",null,{"name":"Next.MetadataOutlet","children":"$@12"}]}]]}],"p":"$@13","v":null,"s":"$9"}}]]
+2:[["children",{"s":"knowledge","h":64,"d":{"r":["$","$3","c",{"children":[null,["$","$L5",null,{"parallelRouterKey":"children","template":["$","$L6",null,{}]}]]}],"p":"$@7","v":"$8","s":"$9"},"c":"$Qa"}]]
+1:[["children",{"s":"(site)","c":"$Q2"}]]
+0:{"t":{"t":{"s":"","h":16,"c":"$Q1"},"h":{"r":["$","$3","h",{"children":[null,["$","$L15",null,{"children":[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","2",{"name":"theme-color","content":"#080C0E"}],["$","meta","3",{"name":"color-scheme","content":"dark"}]]}],["$","$L17",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$11",null,{"name":"Next.Metadata","children":[["$","title","0",{"children":"ידע מעשי על סוכני AI ואוטומציות | SYSTM"}],["$","meta","1",{"name":"description","content":"מדריכים מקוריים: בחירת האוטומציה הראשונה, סוכן או אוטומציה, והגדרת פיילוט AI."}],["$","meta","2",{"name":"application-name","content":"SYSTM"}],["$","link","3",{"rel":"manifest","href":"/manifest.webmanifest"}],["$","meta","4",{"name":"robots","content":"noindex, nofollow"}],["$","meta","5",{"property":"og:title","content":"ידע מעשי על סוכני AI ואוטומציות | SYSTM"}],["$","meta","6",{"property":"og:description","content":"מדריכים מקוריים: בחירת האוטומציה הראשונה, סוכן או אוטומציה, והגדרת פיילוט AI."}],["$","meta","7",{"property":"og:site_name","content":"SYSTM"}],["$","meta","8",{"property":"og:locale","content":"he_IL"}],["$","meta","9",{"property":"og:type","content":"website"}],["$","meta","10",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","11",{"name":"twitter:title","content":"ידע מעשי על סוכני AI ואוטומציות | SYSTM"}],["$","meta","12",{"name":"twitter:description","content":"מדריכים מקוריים: בחירת האוטומציה הראשונה, סוכן או אוטומציה, והגדרת פיילוט AI."}],["$","link","13",{"rel":"icon","href":"/icon.png?icon.2iyghemp-tcbx.png","sizes":"32x32","type":"image/png"}],["$","link","14",{"rel":"apple-touch-icon","href":"/apple-icon.png?apple-icon.22yr47s55p2y0.png","sizes":"180x180","type":"image/png"}],["$","$L18","15",{}]]}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":"$@19","v":null,"s":"$9"}},"a":"$@1a","u":"$@1b","b":"F7GCfDcy9nRu_PtQBP6HQ"}
+12:null
+1b:true
+9:300
+9:C
+1a:0
+7:"$undefined"
+19:"$undefined"
+13:"$undefined"

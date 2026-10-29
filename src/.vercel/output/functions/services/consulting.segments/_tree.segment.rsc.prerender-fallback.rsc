@@ -1,0 +1,10 @@
+:HL["/_next/static/chunks/31blkk0bvmulu.css","style"]
+:HL["/_next/static/media/Heebo_Black-s.p.3z2yf5cvixb36.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/Heebo_Bold-s.p.0iiau2i15diyr.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/Heebo_Medium-s.p.0qkb9nxewj6y-.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/Heebo_Regular-s.p.0poimt5n21blw.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+4:[["children",{"s":"__PAGE__","h":160}]]
+3:[["children",{"s":{"n":"slug","t":"d","k":"consulting","s":[]},"h":96,"c":"$Q4"}]]
+2:[["children",{"s":"services","h":64,"c":"$Q3"}]]
+1:[["children",{"s":"(site)","c":"$Q2"}]]
+0:{"b":"F7GCfDcy9nRu_PtQBP6HQ","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
