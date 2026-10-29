@@ -16,18 +16,28 @@ export function HeroCallouts() {
 
   useEffect(() => {
     let raf = 0;
+    // Every style write forces a style recalculation, so only write what actually changed. Off screen (w < 0.01) the
+    // loop does nothing at all: it used to rewrite the opacity every frame on every visit to the home page.
+    let lastOpacity = '';
+    const lastT: string[] = [];
     const loop = () => {
       raf = requestAnimationFrame(loop);
       const el = root.current;
       if (!el) return;
       const w = stageBus.ready ? Math.pow(stageBus.hero, 2) : 0;
-      el.style.opacity = String(w);
+      const op = w < 0.01 ? '0' : w.toFixed(2);
+      if (op !== lastOpacity) {
+        el.style.opacity = op;
+        lastOpacity = op;
+      }
       if (w < 0.01) return;
       items.current.forEach((node, i) => {
         if (!node) return;
-        const x = stageBus.anchors[i * 2];
-        const y = stageBus.anchors[i * 2 + 1];
-        node.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0)`;
+        const t = `translate3d(${stageBus.anchors[i * 2].toFixed(1)}px, ${stageBus.anchors[i * 2 + 1].toFixed(1)}px, 0)`;
+        if (t !== lastT[i]) {
+          node.style.transform = t;
+          lastT[i] = t;
+        }
       });
     };
     raf = requestAnimationFrame(loop);
