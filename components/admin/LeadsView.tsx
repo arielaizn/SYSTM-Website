@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { leadAddNote, leadBulk, leadCreate, leadDelete, leadsCsv, leadUpdate } from '../../app/admin/actions';
 import type { Doc } from '../../convex/_generated/dataModel';
+import { Select } from '../ui/Select';
 import { Icon } from './Icon';
 import { MobileLeads } from './MobileLeads';
 import { Drawer, fmtDate, STATUS_LABEL, STATUSES, timeAgo, useAct, useAdmin } from './ui';
@@ -141,16 +142,7 @@ export function LeadsView({ initial, labels, choices, initialStatus, openId }: P
       {sel.size > 0 ? (
         <div className="ad-bulk" role="region" aria-label="פעולות על הנבחרים">
           <b>{sel.size} נבחרו</b>
-          <select className="ad-select" style={{ width: 170, minHeight: 36 }} defaultValue="" onChange={(e) => e.target.value && bulkStatus(e.target.value as Status)} aria-label="שינוי סטטוס לנבחרים">
-            <option value="" disabled>
-              שינוי סטטוס…
-            </option>
-            {STATUSES.map((s) => (
-              <option key={s} value={s}>
-                {STATUS_LABEL[s]}
-              </option>
-            ))}
-          </select>
+          <Select style={{ width: 190, minHeight: 36 }} value="" placeholder="שינוי סטטוס…" aria-label="שינוי סטטוס לנבחרים" onChange={(v) => bulkStatus(v as Status)} options={STATUSES.map((s) => ({ value: s, label: STATUS_LABEL[s] }))} />
           <button type="button" className="ad-btn ad-btn--sm ad-btn--danger" onClick={bulkDelete}>
             <Icon name="trash" /> מחיקה
           </button>
@@ -385,13 +377,7 @@ function LeadDetail({ lead, labels, choices, onClose, onPatch, onDeleted, onStat
 
         <label className="ad-field">
           <span>סטטוס</span>
-          <select className="ad-select" value={lead.status} onChange={(e) => onStatus(e.target.value as Status)}>
-            {STATUSES.map((s) => (
-              <option key={s} value={s}>
-                {STATUS_LABEL[s]}
-              </option>
-            ))}
-          </select>
+          <Select aria-label="סטטוס" value={lead.status} onChange={(v) => onStatus(v as Status)} options={STATUSES.map((s) => ({ value: s, label: STATUS_LABEL[s] }))} />
         </label>
 
         {lead.message ? (
@@ -422,14 +408,7 @@ function LeadDetail({ lead, labels, choices, onClose, onPatch, onDeleted, onStat
           </div>
           <label className="ad-field">
             <span>כיוון הפנייה</span>
-            <select className="ad-select" value={form.service} onChange={(e) => setForm({ ...form, service: e.target.value })}>
-              {choices.map((c) => (
-                <option key={c.value} value={c.value}>
-                  {c.label}
-                </option>
-              ))}
-              {!choices.some((c) => c.value === form.service) ? <option value={form.service}>{form.service}</option> : null}
-            </select>
+            <Select aria-label="כיוון הפנייה" value={form.service} onChange={(v) => setForm({ ...form, service: v })} options={[...choices.map((c) => ({ value: c.value, label: c.label })), ...(choices.some((c) => c.value === form.service) ? [] : [{ value: form.service, label: form.service }])]} />
           </label>
           {dirty ? (
             <button type="button" className="ad-btn ad-btn--primary ad-btn--sm" style={{ justifySelf: 'start' }} onClick={saveDetails}>
@@ -536,13 +515,7 @@ function AddLead({ open, onClose, choices, onDone }: { open: boolean; onClose: (
         </div>
         <label className="ad-field">
           <span>כיוון הפנייה</span>
-          <select className="ad-select" value={f.service} onChange={(e) => setF({ ...f, service: e.target.value })}>
-            {choices.map((c) => (
-              <option key={c.value} value={c.value}>
-                {c.label}
-              </option>
-            ))}
-          </select>
+          <Select aria-label="כיוון הפנייה" value={f.service} onChange={(v) => setF({ ...f, service: v })} options={choices.map((c) => ({ value: c.value, label: c.label }))} />
         </label>
         <label className="ad-field">
           <span>הודעה או הקשר</span>

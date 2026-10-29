@@ -11,6 +11,7 @@ import { Counter, useUnsavedGuard } from './editors';
 import { Icon } from './Icon';
 import { RichEditor } from './RichEditor';
 import { useAct, useAdmin } from './ui';
+import { Select } from '../ui/Select';
 
 export type PageDraft = Omit<PageInput, 'blocks'> & { blocks: AnyBlock[] };
 export const EMPTY_PAGE: PageDraft = { slug: '', title: '', status: 'draft', blocks: [] };
@@ -57,9 +58,7 @@ function FieldInput({ f, value, onChange }: { f: Field; value: unknown; onChange
     <label className="ad-field">
       <span>{f.label}</span>
       {f.options ? (
-        <select className="ad-select" value={v} onChange={(e) => onChange(f.key === 'columns' ? Number(e.target.value) : e.target.value)}>
-          {f.options.map((o) => <option key={o.v} value={o.v}>{o.l}</option>)}
-        </select>
+        <Select value={v} aria-label={f.label} onChange={(x) => onChange(f.key === 'columns' ? Number(x) : x)} options={f.options.map((o) => ({ value: o.v, label: o.l }))} />
       ) : f.kind === 'textarea' ? (
         <textarea className="ad-textarea" rows={3} value={v} onChange={(e) => onChange(e.target.value)} />
       ) : f.kind === 'number' ? (

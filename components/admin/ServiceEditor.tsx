@@ -7,6 +7,7 @@ import { serviceDelete, serviceSave } from '../../app/admin/actions';
 import { Counter, QAList, StringList, useUnsavedGuard } from './editors';
 import { Icon } from './Icon';
 import { Switch, useAct, useAdmin } from './ui';
+import { Select } from '../ui/Select';
 
 export type ServiceInput = {
   slug: string;
@@ -92,13 +93,7 @@ export function ServiceEditor({ id, initial }: { id: string | null; initial: Ser
           </label>
           <label className="ad-field">
             <span>איור</span>
-            <select className="ad-select" value={d.diagram} onChange={(e) => set('diagram', e.target.value)}>
-              {DIAGRAMS.map(([v, l]) => (
-                <option key={v} value={v}>
-                  {l}
-                </option>
-              ))}
-            </select>
+            <Select aria-label="איור" value={d.diagram} onChange={(v) => set('diagram', v)} options={DIAGRAMS.map(([v, l]) => ({ value: v, label: l }))} />
             <small>האיור החי שמופיע בכרטיס ובעמוד.</small>
           </label>
         </div>

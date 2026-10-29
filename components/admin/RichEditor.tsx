@@ -14,10 +14,11 @@ import { Placeholder } from '@tiptap/extensions';
 import { EditorContent, useEditor, useEditorState, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import {
-  AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, ChevronsUpDown, Code, Code2, Eraser, Highlighter, Image as ImageIcon, Info, Italic, Link2, List, ListChecks, ListTree, ListOrdered, Minus,
+  AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Code, Code2, Eraser, Highlighter, Image as ImageIcon, Info, Italic, Link2, List, ListChecks, ListTree, ListOrdered, Minus,
   MousePointerClick, Palette, Plus, Quote, Redo2, Strikethrough, Subscript as SubIcon, Superscript as SupIcon, Table2, Underline as UnderlineIcon, Undo2, SquarePlay,
 } from 'lucide-react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { Select } from '../ui/Select';
 
 /** Highlighted box: info / tip / warning. Stored as <div class="note-box note-box--x" data-type="callout">. */
 const Callout = Node.create({
@@ -199,17 +200,7 @@ export function RichEditor({ value, onChange }: { value: string; onChange: (html
           <Btn label="ביטול" on={() => editor.chain().focus().undo().run()} disabled={!s.canUndo}><Undo2 /></Btn>
           <Btn label="שחזור" on={() => editor.chain().focus().redo().run()} disabled={!s.canRedo}><Redo2 /></Btn>
           <span className="rte-sep" />
-          <label className="rte-select">
-            <ChevronsUpDown aria-hidden="true" />
-            <select aria-label="סגנון בלוק" value={s.block} onChange={(e) => setBlock(e.target.value)}>
-              <option value="p">פסקה</option>
-              <option value="h2">כותרת 2</option>
-              <option value="h3">כותרת 3</option>
-              <option value="h4">כותרת 4</option>
-              <option value="quote">ציטוט</option>
-              <option value="code">קוד</option>
-            </select>
-          </label>
+          <Select variant="bar" aria-label="סגנון בלוק" value={s.block} onChange={setBlock} options={[{ value: 'p', label: 'פסקה' }, { value: 'h2', label: 'כותרת 2' }, { value: 'h3', label: 'כותרת 3' }, { value: 'h4', label: 'כותרת 4' }, { value: 'quote', label: 'ציטוט' }, { value: 'code', label: 'קוד' }]} />
         </div>
         <div className="rte-grp">
           <Btn label="מודגש" active={s.bold} on={() => editor.chain().focus().toggleBold().run()}><Bold /></Btn>

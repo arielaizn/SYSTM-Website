@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Select } from '../ui/Select';
 
 type State = 'idle' | 'playing' | 'paused';
 
@@ -147,12 +148,7 @@ export function GuideReader({ title, paragraphs }: { title: string; paragraphs: 
         <button type="button" aria-label="עצירה" onClick={stop} disabled={state === 'idle'}>■</button>
         <label className="reader__rate">
           <span className="sr-only">מהירות</span>
-          <select value={rate} onChange={(e) => setRate(Number(e.target.value))} aria-label="מהירות הקראה">
-            <option value={0.85}>0.85×</option>
-            <option value={1}>1×</option>
-            <option value={1.25}>1.25×</option>
-            <option value={1.5}>1.5×</option>
-          </select>
+          <Select variant="pill" aria-label="מהירות הקראה" value={String(rate)} onChange={(v) => setRate(Number(v))} options={[{ value: '0.85', label: '0.85×' }, { value: '1', label: '1×' }, { value: '1.25', label: '1.25×' }, { value: '1.5', label: '1.5×' }]} />
         </label>
       </div>
     </div>
