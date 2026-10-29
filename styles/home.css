@@ -39,7 +39,7 @@ html[data-gl='off'] .hero__poster { display: block; }
 
 @media (max-width: 900px) {
   .hero { align-items: flex-start; padding-top: calc(var(--header-h) + 36px); padding-bottom: 96px; min-height: 100svh; }
-  .hero__grid { grid-template-columns: 1fr; }
+  .hero__grid { grid-template-columns: minmax(0, 1fr); }
   .hero__copy::before { inset: -40px calc(var(--pad) * -1); }
   .hero__scroll, .callouts { display: none; }
   .br-desktop { display: none; }
@@ -161,7 +161,7 @@ html[data-gl='off'] .hero__poster { display: block; }
 .demo__detail span { color: #c8d3d6; font-size: 17px; }
 .demo__note { margin-top: 18px; font-size: 13px; color: var(--muted); }
 @media (max-width: 760px) {
-  .demo__flow { grid-template-columns: 1fr; padding-top: 0; padding-inline-start: 36px; gap: 4px; }
+  .demo__flow { grid-template-columns: minmax(0, 1fr); padding-top: 0; padding-inline-start: 36px; gap: 4px; }
   .demo__rail { inset-inline: auto; inset-inline-start: 11px; inset-block: 26px; width: 2px; height: auto; top: auto; }
   .demo__fill { inset-block: 0 auto; width: 100%; height: var(--pct); inset-inline-start: 0; transition-property: height; }
   .demo__token { display: none; }
@@ -173,7 +173,7 @@ html[data-gl='off'] .hero__poster { display: block; }
 /* Process ---------------------------------------------------------------------- */
 .process__grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
 .process__intro { position: sticky; top: 120px; }
-.process__intro .sec-head { grid-template-columns: 1fr; margin-bottom: 32px; }
+.process__intro .sec-head { grid-template-columns: minmax(0, 1fr); margin-bottom: 32px; }
 .process__rail { width: 2px; height: clamp(120px, 24vh, 220px); border-radius: 2px; background: rgb(255 255 255 / 0.1); overflow: hidden; }
 .process__rail span { display: block; width: 100%; height: calc(var(--p, 0) * 100%); background: var(--ice); box-shadow: 0 0 14px var(--ice); }
 .process__steps { display: grid; gap: 18px; }
@@ -185,10 +185,10 @@ html[data-gl='off'] .hero__poster { display: block; }
 .pstep__grid dt { font-size: 12px; letter-spacing: 0.08em; color: var(--ice); }
 .pstep__grid dd { margin: 6px 0 0; font-size: 15px; line-height: 1.55; color: #c4cfd2; }
 @media (max-width: 900px) {
-  .process__grid { grid-template-columns: 1fr; }
+  .process__grid { grid-template-columns: minmax(0, 1fr); }
   .process__intro { position: static; }
   .process__rail { display: none; }
-  .pstep__grid { grid-template-columns: 1fr; gap: 14px; }
+  .pstep__grid { grid-template-columns: minmax(0, 1fr); gap: 14px; }
 }
 
 /* Founder ------------------------------------------------------------------------ */
@@ -199,7 +199,7 @@ html[data-gl='off'] .hero__poster { display: block; }
 .founder__big { font-size: clamp(66px, 9.4vw, 132px); font-weight: 900; line-height: 0.92; letter-spacing: -0.045em; }
 .founder__mono { position: absolute !important; inset: -8% -14% auto auto; width: 92%; fill: rgb(172 244 248 / 0.07); z-index: 0 !important; pointer-events: none; }
 .founder__foot { font-size: 11px; letter-spacing: 0.2em; color: var(--muted); }
-@media (max-width: 900px) { .founder { grid-template-columns: 1fr; } .founder__card { order: -1; max-width: 420px; } }
+@media (max-width: 900px) { .founder { grid-template-columns: minmax(0, 1fr); } .founder__card { order: -1; max-width: 420px; } }
 
 /* Guides --------------------------------------------------------------------------- */
 .agrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
@@ -250,12 +250,12 @@ html[data-gl='off'] .hero__poster { display: block; }
   .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .bento__card, .bento__card--ai-agents, .bento__card--automation { grid-column: span 1; }
   .bento__card--claude-code { grid-column: span 2; }
-  .agrid { grid-template-columns: 1fr; }
+  .agrid { grid-template-columns: minmax(0, 1fr); }
   .acard { flex-direction: row; }
   .acard .art { width: 42%; aspect-ratio: auto; min-height: 220px; flex: none; }
 }
 @media (max-width: 640px) {
-  .bento { grid-template-columns: 1fr; }
+  .bento { grid-template-columns: minmax(0, 1fr); }
   .bento__card--claude-code { grid-column: span 1; }
   .bento__card { min-height: 0; }
   .bento__art { min-height: 0; padding: 24px 24px 0; }
@@ -275,4 +275,4 @@ html[data-gl='off'] .hero__poster { display: block; }
 .paths__to { display: inline-flex; align-items: center; gap: 12px; font-size: 15px; color: #cfd9dc; white-space: nowrap; }
 .paths__to svg { width: 18px; height: 18px; color: var(--ice); transition: transform 280ms var(--ease-out); }
 @media (hover: hover) and (pointer: fine) { .paths__row:hover { transform: translateX(-4px); } .paths__row:hover .paths__to svg { transform: translate(-4px, -4px); } }
-@media (max-width: 900px) { .paths__row { grid-template-columns: 1fr; gap: 10px; padding: 24px 26px; } .paths__to { justify-content: space-between; } }
+@media (max-width: 900px) { .paths__row { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 24px 26px; } .paths__to { justify-content: space-between; } }
