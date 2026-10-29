@@ -52,6 +52,15 @@ test('403 for a wrong or missing origin, and no delivery', async () => {
   assert.equal(calls.length, 0);
 });
 
+test('ALLOWED_ORIGIN may list several origins; each exact one passes, anything else does not', async () => {
+  process.env.ALLOWED_ORIGIN = `https://www.getsystm.com, ${ORIGIN}/ ,https://systm-site.vercel.app`;
+  assert.notEqual((await POST(req(lead, { origin: 'https://www.getsystm.com' }))).status, 403);
+  assert.notEqual((await POST(req(lead, { origin: ORIGIN }))).status, 403);
+  assert.notEqual((await POST(req(lead, { origin: 'https://systm-site.vercel.app' }))).status, 403);
+  assert.equal((await POST(req(lead, { origin: 'https://getsystm.com' }))).status, 403, 'the bare domain is a different origin');
+  assert.equal((await POST(req(lead, { origin: 'https://www.getsystm.com.evil.example' }))).status, 403);
+});
+
 test('403 when ALLOWED_ORIGIN is not configured at all', async () => {
   delete process.env.ALLOWED_ORIGIN;
   assert.equal((await POST(req(lead))).status, 403);

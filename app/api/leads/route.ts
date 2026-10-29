@@ -21,9 +21,10 @@ function limited(ip: string) {
 }
 
 export async function POST(request: Request) {
-  const allowed = process.env.ALLOWED_ORIGIN?.replace(/\/$/, '');
+  // ALLOWED_ORIGIN is one exact origin, or several separated by commas (the live domain and the *.vercel.app address).
+  const allowed = (process.env.ALLOWED_ORIGIN ?? '').split(',').map((o) => o.trim().replace(/\/$/, '')).filter(Boolean);
   const origin = request.headers.get('origin');
-  if (!allowed || origin !== allowed) return json(403, { error: 'origin_not_allowed' });
+  if (!origin || !allowed.includes(origin)) return json(403, { error: 'origin_not_allowed' });
 
   if (!(request.headers.get('content-type') ?? '').toLowerCase().startsWith('application/json')) {
     return json(415, { error: 'json_only' });
