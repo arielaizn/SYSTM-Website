@@ -7,6 +7,7 @@ import { SmartLink } from '../../../../components/ui/SmartLink';
 import { articleBySlug, getContent } from '../../../../lib/content-source';
 import { rv } from '../../../../lib/reveal';
 import { ArticleArt } from '../../../../components/sections/ArticleArt';
+import { CodeCopy } from '../../../../components/sections/CodeCopy';
 import { GuideReader } from '../../../../components/sections/GuideReader';
 import { htmlToText, renderToc, sanitizeBody, withHeadingIds } from '../../../../lib/sanitize';
 import { articleSchema, breadcrumbSchema, JsonLd, pageMeta } from '../../../../lib/seo';
@@ -41,6 +42,7 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
   return (
     <main id="main">
       <ReadingProgress />
+      {rich ? <CodeCopy /> : null}
       <JsonLd
         data={[
           articleSchema(a),
