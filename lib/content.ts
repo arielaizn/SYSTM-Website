@@ -223,6 +223,12 @@ export type Article = {
   seoDescription?: string;
   focusKeyword?: string;
   ogImage?: string;
+  coverStyle?: number;
+  coverSeed?: number;
+  /** Read-aloud player on the guide page. On unless set to false. */
+  narration?: boolean;
+  /** Table of contents beside the guide. On unless set to false. */
+  showToc?: boolean;
   publishedAt?: number;
   updatedAt?: number;
 };

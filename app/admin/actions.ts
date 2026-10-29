@@ -40,6 +40,8 @@ const HEBREW: Record<string, string> = {
   'too many blocks': 'יותר מדי בלוקים בדף',
   'invalid block': 'אחד הבלוקים אינו תקין',
   'url must be an https link': 'הקישור חייב להתחיל ב־https',
+  'invalid cover style': 'סגנון כיסוי לא תקין',
+  'invalid cover seed': 'זרע כיסוי לא תקין',
   'invalid code': 'קוד קצר: אותיות אנגליות קטנות, ספרות, מקף וקו תחתון (2 עד 40 תווים)',
   'code already in use': 'הקוד הקצר כבר בשימוש',
   'could not allocate a code': 'לא הצלחנו ליצור קוד. נסו שוב',
@@ -284,7 +286,7 @@ export async function linkDelete(id: string) {
 }
 
 // --- Articles -----------------------------------------------------------------------------------------
-type ArticleInput = { slug: string; status: 'draft' | 'published'; category: string; title: string; summary: string; read: string; sections: { h: string; t: string }[]; body?: string; seoTitle?: string; seoDescription?: string; focusKeyword?: string; ogImage?: string };
+type ArticleInput = { slug: string; status: 'draft' | 'published'; category: string; title: string; summary: string; read: string; sections: { h: string; t: string }[]; body?: string; seoTitle?: string; seoDescription?: string; focusKeyword?: string; ogImage?: string; coverStyle?: number; coverSeed?: number; narration?: boolean; showToc?: boolean };
 
 export async function articleSave(id: string | null, input: ArticleInput) {
   // The rich-text body is sanitized here, on the server, before it reaches Convex. `sections` becomes a plain-text mirror of it.

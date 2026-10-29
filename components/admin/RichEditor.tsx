@@ -14,7 +14,7 @@ import { Placeholder } from '@tiptap/extensions';
 import { EditorContent, useEditor, useEditorState, type Editor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import {
-  AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, ChevronsUpDown, Code, Code2, Eraser, Highlighter, Image as ImageIcon, Info, Italic, Link2, List, ListChecks, ListOrdered, Minus,
+  AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, ChevronsUpDown, Code, Code2, Eraser, Highlighter, Image as ImageIcon, Info, Italic, Link2, List, ListChecks, ListTree, ListOrdered, Minus,
   MousePointerClick, Palette, Plus, Quote, Redo2, Strikethrough, Subscript as SubIcon, Superscript as SupIcon, Table2, Underline as UnderlineIcon, Undo2, SquarePlay,
 } from 'lucide-react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
@@ -28,6 +28,16 @@ const Callout = Node.create({
   addAttributes: () => ({ tone: { default: 'info', parseHTML: (el) => el.getAttribute('data-callout') || 'info', renderHTML: (a) => ({ 'data-callout': a.tone, class: `note-box note-box--${a.tone}` }) } }),
   parseHTML: () => [{ tag: 'div[data-type="callout"]' }],
   renderHTML: ({ HTMLAttributes }) => ['div', mergeAttributes(HTMLAttributes, { 'data-type': 'callout' }), 0],
+});
+
+/** Table of contents placeholder. The real list is generated from the headings when the guide is shown. */
+const Toc = Node.create({
+  name: 'toc',
+  group: 'block',
+  atom: true,
+  selectable: true,
+  parseHTML: () => [{ tag: 'div[data-type="toc"]' }],
+  renderHTML: () => ['div', { 'data-type': 'toc' }],
 });
 
 /** Call-to-action button. Stored as <a class="cta-btn" href>. Inline atom kept simple: label + href. */
@@ -54,6 +64,7 @@ const COMMANDS: Cmd[] = [
   { id: 'table', label: 'טבלה', hint: 'table', run: (e) => e.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run() },
   { id: 'box', label: 'קופסת הדגשה', hint: 'callout', run: (e) => e.chain().focus().wrapIn('callout', { tone: 'info' }).run() },
   { id: 'btn', label: 'כפתור', hint: 'button', run: (_e, ask) => ask('button') },
+  { id: 'toc', label: 'תוכן עניינים', hint: 'toc', run: (e) => e.chain().focus().insertContent({ type: 'toc' }).run() },
   { id: 'quote', label: 'ציטוט', hint: 'quote', run: (e) => e.chain().focus().toggleBlockquote().run() },
   { id: 'code', label: 'בלוק קוד', hint: 'code', run: (e) => e.chain().focus().toggleCodeBlock().run() },
   { id: 'hr', label: 'קו מפריד', hint: 'divider', run: (e) => e.chain().focus().setHorizontalRule().run() },
@@ -96,6 +107,7 @@ export function RichEditor({ value, onChange }: { value: string; onChange: (html
       TaskList,
       TaskItem.configure({ nested: true }),
       Callout,
+      Toc,
       CtaButton,
       Placeholder.configure({ placeholder: 'כותבים כאן. מקלידים / כדי לפתוח את רשימת הפקודות: כותרת, תמונה, טבלה, קופסה, כפתור ועוד.' }),
     ],
@@ -231,6 +243,7 @@ export function RichEditor({ value, onChange }: { value: string; onChange: (html
           <Btn label="בלוק קוד" active={s.codeBlock} on={() => editor.chain().focus().toggleCodeBlock().run()}><Code2 /></Btn>
           <Btn label="ציטוט" active={s.quote} on={() => editor.chain().focus().toggleBlockquote().run()}><Quote /></Btn>
           <Btn label="קופסת הדגשה" active={s.callout} on={() => (s.callout ? editor.chain().focus().lift('callout').run() : editor.chain().focus().wrapIn('callout', { tone: 'info' }).run())}><Info /></Btn>
+          <Btn label="תוכן עניינים אוטומטי" on={() => editor.chain().focus().insertContent({ type: 'toc' }).run()}><ListTree /></Btn>
           <Btn label="כפתור" on={() => openAsk('button')}><MousePointerClick /></Btn>
           <Btn label="קו מפריד" on={() => editor.chain().focus().setHorizontalRule().run()}><Minus /></Btn>
         </div>

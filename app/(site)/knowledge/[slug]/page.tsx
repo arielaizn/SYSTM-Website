@@ -6,7 +6,9 @@ import { ArrowUpLeft } from '../../../../components/ui/Icons';
 import { SmartLink } from '../../../../components/ui/SmartLink';
 import { articleBySlug, getContent } from '../../../../lib/content-source';
 import { rv } from '../../../../lib/reveal';
-import { sanitizeBody, withHeadingIds } from '../../../../lib/sanitize';
+import { ArticleArt } from '../../../../components/sections/ArticleArt';
+import { GuideReader } from '../../../../components/sections/GuideReader';
+import { htmlToText, renderToc, sanitizeBody, withHeadingIds } from '../../../../lib/sanitize';
 import { articleSchema, breadcrumbSchema, JsonLd, pageMeta } from '../../../../lib/seo';
 
 type Params = { slug: string };
@@ -30,7 +32,11 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
   const next = articles[(articles.findIndex((x) => x.slug === a.slug) + 1) % articles.length];
   // Rich-text articles render their (re-sanitized) HTML; older ones keep the plain sections.
   const rich = a.body ? withHeadingIds(sanitizeBody(a.body)) : null;
+  const richHtml = rich ? renderToc(rich.html, rich.outline) : '';
   const toc = rich ? rich.headings : a.sections.map(([h]) => h);
+  const showToc = a.showToc !== false && toc.length > 1;
+  // Read-aloud text: the title, then every block of the body (or of the plain sections) on its own line.
+  const spoken = (rich ? htmlToText(rich.html.replace(/<div[^>]*data-type="toc"[^>]*><\/div>/g, '')) : a.sections.map(([h, t]) => `${h}\n${t}`).join('\n')).split('\n').map((l) => l.trim()).filter(Boolean);
 
   return (
     <main id="main">
@@ -54,7 +60,8 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
         actions={<span className="article-meta">SYSTM · {a.read}</span>}
       />
 
-      <article className="container article" data-stage="reading">
+      <article className={`container article${showToc ? '' : ' article--wide'}`} data-stage="reading">
+        {showToc ? (
         <aside className="article__toc lg lg--dense" aria-label="תוכן עניינים" data-reveal="">
           <p>במדריך הזה</p>
           {toc.map((h, i) => (
@@ -64,9 +71,14 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
             </a>
           ))}
         </aside>
+        ) : null}
         <div className="article__body">
+          <div className="cover-hero lg lg--dense art-hover" data-reveal="">
+            <ArticleArt a={a} i={articles.findIndex((x) => x.slug === a.slug)} />
+          </div>
+          {a.narration !== false ? <GuideReader title={a.title} paragraphs={spoken} /> : null}
           {rich ? (
-            <div className="prose" dangerouslySetInnerHTML={{ __html: rich.html }} />
+            <div className="prose" dangerouslySetInnerHTML={{ __html: richHtml }} />
           ) : (
             a.sections.map(([h, t], i) => (
               <section key={h} id={`part-${i + 1}`} {...rv(0)}>

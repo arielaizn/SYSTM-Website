@@ -1,5 +1,6 @@
 'use client';
 
+import { installGlowLoop } from '../../lib/glow-loop';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';
@@ -25,7 +26,7 @@ const NAV: { group?: string; href: string; label: string; icon: IconName; badge?
 ];
 
 const CONTENT = ['/admin/services', '/admin/articles', '/admin/faqs'];
-const MORE = ['/admin/settings', '/admin/activity', '/admin/data', '/admin/security'];
+const MORE = ['/admin/settings', '/admin/pages', '/admin/links', '/admin/seo', '/admin/activity', '/admin/data', '/admin/security'];
 
 const isActive = (path: string, href: string) => (href === '/admin' ? path === '/admin' || path === '/admin/' : path.startsWith(href));
 
@@ -36,6 +37,7 @@ export function AdminShell({ newLeads, children }: { newLeads: number; children:
   const closeMore = useCallback(() => setMore(false), []);
 
   useEffect(() => setMore(false), [path]);
+  useEffect(() => installGlowLoop(), []);
 
   const onContent = CONTENT.some((h) => isActive(path, h));
   const onMore = MORE.some((h) => isActive(path, h));

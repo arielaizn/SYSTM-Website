@@ -59,6 +59,10 @@ export const articleData = v.object({
   seoDescription: v.optional(v.string()),
   focusKeyword: v.optional(v.string()),
   ogImage: v.optional(v.string()),
+  coverStyle: v.optional(v.number()),
+  coverSeed: v.optional(v.number()),
+  narration: v.optional(v.boolean()),
+  showToc: v.optional(v.boolean()),
 });
 
 export const faqData = v.object({ q: v.string(), a: v.string(), published: v.boolean() });
@@ -89,7 +93,7 @@ export function validateService(d: { slug: string; label: string; title: string;
   for (const [k, s, m] of [['label', d.label, 80], ['title', d.title, 200], ['intro', d.intro, 800], ['short', d.short, 300], ['meta', d.meta, 300], ['fit', d.fit, 500], ['outcome', d.outcome, 500]] as const) assertMax(k, s, m);
 }
 
-export function validateArticle(d: { slug: string; title: string; summary: string; category: string; read: string; sections: { h: string; t: string }[]; body?: string; seoTitle?: string; seoDescription?: string; focusKeyword?: string; ogImage?: string }) {
+export function validateArticle(d: { slug: string; title: string; summary: string; category: string; read: string; sections: { h: string; t: string }[]; body?: string; seoTitle?: string; seoDescription?: string; focusKeyword?: string; ogImage?: string; coverStyle?: number; coverSeed?: number }) {
   assertSlug(d.slug);
   if (!d.title.trim()) throw new Error('title is required');
   if (d.sections.length > 20) throw new Error('too many sections');
@@ -101,6 +105,8 @@ export function validateArticle(d: { slug: string; title: string; summary: strin
   assertMax('seo description', d.seoDescription ?? '', 320);
   assertMax('focus keyword', d.focusKeyword ?? '', 80);
   if (d.ogImage) assertSafeHref(d.ogImage);
+  if (d.coverStyle !== undefined && !(Number.isInteger(d.coverStyle) && d.coverStyle >= 0 && d.coverStyle <= 7)) throw new Error('invalid cover style');
+  if (d.coverSeed !== undefined && !(Number.isInteger(d.coverSeed) && d.coverSeed >= 0 && d.coverSeed <= 999999)) throw new Error('invalid cover seed');
   for (const s of d.sections) {
     assertMax('section title', s.h, 200);
     assertMax('section text', s.t, 8000);

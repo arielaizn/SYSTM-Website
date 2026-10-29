@@ -7,7 +7,7 @@ import { site } from '../../../../lib/config';
 import { articles as builtInArticles } from '../../../../lib/content';
 import { auditArticles, auditPages, keywordConflicts, linkSuggestions, siteHealth, type AuditArticle, type AuditPage } from '../../../../lib/seo-audit';
 import { pageText, parseBlocks } from '../../../../lib/landing';
-import { sectionsToHtml } from '../../../../lib/sanitize';
+import { sectionsToHtml } from '../../../../lib/html-utils';
 
 async function safe<T>(f: () => Promise<T>, d: T): Promise<T> {
   try {

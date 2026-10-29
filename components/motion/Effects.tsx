@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+import { installGlowLoop } from '../../lib/glow-loop';
 import { installLiquidGlass, installPointerLight } from '../../lib/liquid-glass';
 import { installMotion } from '../../lib/motion';
 import { settleTransition } from '../../lib/transition';
@@ -14,9 +15,11 @@ export function Effects() {
     installMotion();
     const stopGlass = installLiquidGlass();
     const stopLight = installPointerLight();
+    const stopGlow = installGlowLoop();
     return () => {
       stopGlass();
       stopLight();
+      stopGlow();
     };
   }, []);
 

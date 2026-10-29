@@ -80,6 +80,10 @@ function fromRemote(r: Remote): Content | null {
     seoDescription: a.seoDescription || undefined,
     focusKeyword: a.focusKeyword || undefined,
     ogImage: a.ogImage || undefined,
+    coverStyle: a.coverStyle,
+    coverSeed: a.coverSeed,
+    narration: a.narration,
+    showToc: a.showToc,
     publishedAt: a.publishedAt,
     updatedAt: a.updatedAt,
   }));

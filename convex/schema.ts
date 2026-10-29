@@ -51,6 +51,11 @@ export default defineSchema({
     seoDescription: v.optional(v.string()),
     focusKeyword: v.optional(v.string()),
     ogImage: v.optional(v.string()),
+    // Generated cover (see lib/cover.ts): style 0-7 and a seed. Both optional: without them the cover comes from the slug.
+    coverStyle: v.optional(v.number()),
+    coverSeed: v.optional(v.number()),
+    narration: v.optional(v.boolean()),
+    showToc: v.optional(v.boolean()),
     publishedAt: v.optional(v.number()),
     updatedAt: v.number(),
   })

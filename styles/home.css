@@ -211,27 +211,25 @@ html[data-gl='off'] .hero__poster { display: block; }
 .acard h3 { font-size: 24px; line-height: 1.35; margin-bottom: 12px; }
 .acard p.muted { font-size: 16px; }
 .acard .bento__more { margin-top: auto; padding-top: 20px; }
-.art { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: radial-gradient(80% 90% at 20% 0%, rgb(172 244 248 / 0.18), transparent 70%), linear-gradient(160deg, #16252b, #0a1114); }
-.art__pane { position: absolute; inset: 24% 20%; border-radius: 18px; border: 1px solid rgb(172 244 248 / 0.42); background: linear-gradient(140deg, rgb(172 244 248 / 0.18), rgb(172 244 248 / 0.015)); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25); transition: transform 600ms var(--ease-out); }
-.art--0 .art__pane { transform: skewY(-14deg); }
-.art--0 .art__pane:nth-child(2) { transform: translateY(20px) skewY(-14deg); opacity: 0.65; }
-.art--0 .art__pane:nth-child(3) { transform: translateY(40px) skewY(-14deg); opacity: 0.35; }
-.art--1 .art__pane { border-radius: 50%; inset: 18% 28%; }
-.art--1 .art__pane:nth-child(2) { transform: translateX(-34px); opacity: 0.65; }
-.art--1 .art__pane:nth-child(3) { transform: translateX(34px); opacity: 0.4; }
-.art--2 .art__pane { inset: 26% 16%; transform: rotate(-22deg); }
-.art--2 .art__pane:nth-child(2) { transform: rotate(-22deg) translate(16px, 16px); opacity: 0.6; }
-.art--2 .art__pane:nth-child(3) { transform: rotate(-22deg) translate(32px, 32px); opacity: 0.32; }
-.art__line { position: absolute; inset-inline: 16%; bottom: 18%; height: 1px; background: linear-gradient(90deg, transparent, var(--ice), transparent); }
+/* Generated guide covers: three glass panes, eight compositions (lib/cover.ts picks one per guide and sets the --cv-* jitter).
+   Each pane reads --tx/--ty/--r/--sk from its composition; hover slides panes 2 and 3 further along their own offset. */
+.art { --cv-rot: 0deg; --cv-dx: 1; --cv-dy: 1; --cv-glow: 0.18; --cv-gx: 20%; --cv-line: 18%; position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: radial-gradient(80% 90% at var(--cv-gx) 0%, rgb(172 244 248 / var(--cv-glow)), transparent 70%), linear-gradient(160deg, #16252b, #0a1114); }
+.art__pane { --tx: 0px; --ty: 0px; --r: 0deg; --sk: 0deg; --hx: 0px; --hy: 0px; position: absolute; inset: 24% 20%; border-radius: 18px; border: 1px solid rgb(172 244 248 / 0.42); background: linear-gradient(140deg, rgb(172 244 248 / 0.18), rgb(172 244 248 / 0.015)); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25); transform: translate(calc(var(--tx) * var(--cv-dx) + var(--hx)), calc(var(--ty) * var(--cv-dy) + var(--hy))) rotate(calc(var(--r) + var(--cv-rot))) skewY(var(--sk)); transition: transform 600ms var(--ease-out); }
+.art__pane:nth-child(2) { opacity: 0.65; } .art__pane:nth-child(3) { opacity: 0.35; }
+.art--0 .art__pane { --sk: -14deg; } .art--0 .art__pane:nth-child(2) { --ty: 20px; } .art--0 .art__pane:nth-child(3) { --ty: 40px; }
+.art--1 .art__pane { border-radius: 50%; inset: 18% 28%; } .art--1 .art__pane:nth-child(2) { --tx: -34px; } .art--1 .art__pane:nth-child(3) { --tx: 34px; opacity: 0.4; }
+.art--2 .art__pane { inset: 26% 16%; --r: -22deg; } .art--2 .art__pane:nth-child(2) { --tx: 16px; --ty: 16px; opacity: 0.6; } .art--2 .art__pane:nth-child(3) { --tx: 32px; --ty: 32px; opacity: 0.32; }
+.art--3 .art__pane { border-radius: 26px; } .art--3 .art__pane:nth-child(1) { inset: 14% 24%; opacity: 0.45; } .art--3 .art__pane:nth-child(2) { inset: 24% 31%; opacity: 0.7; } .art--3 .art__pane:nth-child(3) { inset: 34% 38%; opacity: 1; }
+.art--4 .art__pane { inset: 14% 36%; border-radius: 999px; } .art--4 .art__pane:nth-child(1) { --tx: 0px; opacity: 0.55; } .art--4 .art__pane:nth-child(2) { --tx: -56px; opacity: 1; } .art--4 .art__pane:nth-child(3) { --tx: 56px; opacity: 0.4; }
+.art--5 .art__pane { inset: 22% 24%; border-radius: 50%; } .art--5 .art__pane:nth-child(1) { --r: 0deg; } .art--5 .art__pane:nth-child(2) { --r: -16deg; } .art--5 .art__pane:nth-child(3) { --r: 16deg; opacity: 0.4; }
+.art--6 .art__pane { inset: 24% 32%; border-radius: 16px; } .art--6 .art__pane:nth-child(2) { --tx: -36px; --ty: 22px; } .art--6 .art__pane:nth-child(3) { --tx: -72px; --ty: 44px; }
+.art--7 .art__pane { inset: 34% 12%; border-radius: 999px; } .art--7 .art__pane:nth-child(1) { --ty: -34px; --tx: 20px; opacity: 0.45; } .art--7 .art__pane:nth-child(2) { --ty: 0px; opacity: 1; } .art--7 .art__pane:nth-child(3) { --ty: 34px; --tx: -20px; }
+.art__line { position: absolute; inset-inline: 16%; bottom: var(--cv-line); height: 1px; background: linear-gradient(90deg, transparent, var(--ice), transparent); }
 .art__tag { position: absolute; top: 14px; left: 16px; font-size: 10px; letter-spacing: 0.18em; color: #a9c6cd; direction: ltr; }
 @media (hover: hover) and (pointer: fine) {
   .acard:hover { transform: translateY(-4px); }
-  .acard:hover .art--0 .art__pane:nth-child(2) { transform: translateY(26px) skewY(-14deg); }
-  .acard:hover .art--0 .art__pane:nth-child(3) { transform: translateY(52px) skewY(-14deg); }
-  .acard:hover .art--1 .art__pane:nth-child(2) { transform: translateX(-46px); }
-  .acard:hover .art--1 .art__pane:nth-child(3) { transform: translateX(46px); }
-  .acard:hover .art--2 .art__pane:nth-child(2) { transform: rotate(-22deg) translate(22px, 22px); }
-  .acard:hover .art--2 .art__pane:nth-child(3) { transform: rotate(-22deg) translate(44px, 44px); }
+  .acard:hover .art__pane:nth-child(2), .art-hover:hover .art__pane:nth-child(2) { --hx: calc(var(--tx) * 0.28); --hy: calc(var(--ty) * 0.28); }
+  .acard:hover .art__pane:nth-child(3), .art-hover:hover .art__pane:nth-child(3) { --hx: calc(var(--tx) * 0.5); --hy: calc(var(--ty) * 0.5); }
 }
 
 /* FAQ ---------------------------------------------------------------------------------- */
