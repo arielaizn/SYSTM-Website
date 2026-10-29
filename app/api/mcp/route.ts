@@ -63,6 +63,21 @@ export async function POST(request: Request) {
     api,
     now: Date.now(),
     fetchImpl: fetch,
+    indexNow: async () => {
+      const key = process.env.INDEXNOW_KEY ?? '';
+      const base = (process.env.NEXT_PUBLIC_SITE_URL ?? '').replace(/\/$/, '');
+      if (!/^[A-Za-z0-9-]{8,128}$/.test(key) || !base.startsWith('https://')) return { ok: false, reason: 'IndexNow לא הוגדר: חסר INDEXNOW_KEY או NEXT_PUBLIC_SITE_URL באתר.' };
+      const { default: sitemap } = await import('../../sitemap');
+      const urlList = (await sitemap()).map((e) => e.url);
+      const res = await fetch('https://api.indexnow.org/indexnow', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json; charset=utf-8' },
+        body: JSON.stringify({ host: new URL(base).host, key, keyLocation: `${base}/api/indexnow`, urlList }),
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!res.ok && res.status !== 202) return { ok: false, reason: `IndexNow ענה ${res.status}` };
+      return { ok: true, sent: urlList.length };
+    },
     publish: async () => {
       revalidateTag('content', { expire: 0 });
       return { done: true };
