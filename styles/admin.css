@@ -285,9 +285,8 @@
 .rte-btn:disabled { opacity: 0.35; cursor: default; }
 .rte-btn[data-on] { color: var(--ad-ice); background: rgb(172 244 248 / 0.1); border-color: rgb(172 244 248 / 0.5); box-shadow: 0 0 16px -4px rgb(172 244 248 / 0.5); }
 .rte-select { position: relative; display: inline-flex; align-items: center; }
-.rte-select select { appearance: none; background: #05090b; color: var(--ad-ink); border: 1px solid rgb(172 244 248 / 0.3); border-radius: 10px; min-height: 36px; padding: 0 34px 0 12px; font-size: 14px; }
-.rte-select svg { position: absolute; inset-inline-start: 8px; width: 15px; height: 15px; pointer-events: none; color: var(--ad-ice); }
-.rte-select select { padding-inline: 12px 30px; }
+.rte-select select { appearance: none; background: #05090b; color: var(--ad-ink); border: 1px solid rgb(172 244 248 / 0.3); border-radius: 10px; min-height: 36px; padding-block: 0; padding-inline: 12px 32px; font-size: 14px; min-width: 110px; }
+.rte-select svg { position: absolute; inset-inline-end: 9px; width: 15px; height: 15px; pointer-events: none; color: var(--ad-ice); }
 .rte-palette { display: flex; gap: 8px; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--ad-line); }
 .rte-swatch { width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgb(255 255 255 / 0.25); }
 .rte-swatch--none { background: transparent; color: var(--ad-muted); display: grid; place-items: center; font-size: 16px; }

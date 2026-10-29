@@ -19,13 +19,13 @@ import {
 } from 'lucide-react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
-/** Highlighted box: info / tip / warning. Stored as <div class="callout callout--x" data-type="callout">. */
+/** Highlighted box: info / tip / warning. Stored as <div class="note-box note-box--x" data-type="callout">. */
 const Callout = Node.create({
   name: 'callout',
   group: 'block',
   content: 'block+',
   defining: true,
-  addAttributes: () => ({ tone: { default: 'info', parseHTML: (el) => el.getAttribute('data-callout') || 'info', renderHTML: (a) => ({ 'data-callout': a.tone, class: `callout callout--${a.tone}` }) } }),
+  addAttributes: () => ({ tone: { default: 'info', parseHTML: (el) => el.getAttribute('data-callout') || 'info', renderHTML: (a) => ({ 'data-callout': a.tone, class: `note-box note-box--${a.tone}` }) } }),
   parseHTML: () => [{ tag: 'div[data-type="callout"]' }],
   renderHTML: ({ HTMLAttributes }) => ['div', mergeAttributes(HTMLAttributes, { 'data-type': 'callout' }), 0],
 });
@@ -52,7 +52,7 @@ const COMMANDS: Cmd[] = [
   { id: 'img', label: 'תמונה', hint: 'image', run: (_e, ask) => ask('image') },
   { id: 'yt', label: 'סרטון יוטיוב', hint: 'video', run: (_e, ask) => ask('youtube') },
   { id: 'table', label: 'טבלה', hint: 'table', run: (e) => e.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run() },
-  { id: 'box', label: 'קופסת הדגשה', hint: 'callout', run: (e) => e.chain().focus().insertContent({ type: 'callout', attrs: { tone: 'info' }, content: [{ type: 'paragraph' }] }).run() },
+  { id: 'box', label: 'קופסת הדגשה', hint: 'callout', run: (e) => e.chain().focus().wrapIn('callout', { tone: 'info' }).run() },
   { id: 'btn', label: 'כפתור', hint: 'button', run: (_e, ask) => ask('button') },
   { id: 'quote', label: 'ציטוט', hint: 'quote', run: (e) => e.chain().focus().toggleBlockquote().run() },
   { id: 'code', label: 'בלוק קוד', hint: 'code', run: (e) => e.chain().focus().toggleCodeBlock().run() },
@@ -123,20 +123,20 @@ export function RichEditor({ value, onChange }: { value: string; onChange: (html
     }
   }, [value, editor]);
 
-  const s = useEditorState({
-    editor,
-    selector: ({ editor: e }) =>
-      e
-        ? {
-            bold: e.isActive('bold'), italic: e.isActive('italic'), underline: e.isActive('underline'), strike: e.isActive('strike'), code: e.isActive('code'), sub: e.isActive('subscript'), sup: e.isActive('superscript'),
-            link: e.isActive('link'), ul: e.isActive('bulletList'), ol: e.isActive('orderedList'), task: e.isActive('taskList'), quote: e.isActive('blockquote'), codeBlock: e.isActive('codeBlock'),
-            table: e.isActive('table'), callout: e.isActive('callout'),
-            alignR: e.isActive({ textAlign: 'right' }), alignC: e.isActive({ textAlign: 'center' }), alignL: e.isActive({ textAlign: 'left' }), alignJ: e.isActive({ textAlign: 'justify' }),
-            block: e.isActive('heading', { level: 2 }) ? 'h2' : e.isActive('heading', { level: 3 }) ? 'h3' : e.isActive('heading', { level: 4 }) ? 'h4' : e.isActive('blockquote') ? 'quote' : e.isActive('codeBlock') ? 'code' : 'p',
-            canUndo: e.can().undo(), canRedo: e.can().redo(),
-          }
-        : null,
-  });
+  const pick = (e: Editor | null) =>
+    e
+    ? {
+        bold: e.isActive('bold'), italic: e.isActive('italic'), underline: e.isActive('underline'), strike: e.isActive('strike'), code: e.isActive('code'), sub: e.isActive('subscript'), sup: e.isActive('superscript'),
+        link: e.isActive('link'), ul: e.isActive('bulletList'), ol: e.isActive('orderedList'), task: e.isActive('taskList'), quote: e.isActive('blockquote'), codeBlock: e.isActive('codeBlock'),
+        table: e.isActive('table'), callout: e.isActive('callout'),
+        alignR: e.isActive({ textAlign: 'right' }), alignC: e.isActive({ textAlign: 'center' }), alignL: e.isActive({ textAlign: 'left' }), alignJ: e.isActive({ textAlign: 'justify' }),
+        block: e.isActive('heading', { level: 2 }) ? 'h2' : e.isActive('heading', { level: 3 }) ? 'h3' : e.isActive('heading', { level: 4 }) ? 'h4' : e.isActive('blockquote') ? 'quote' : e.isActive('codeBlock') ? 'code' : 'p',
+        canUndo: e.can().undo(), canRedo: e.can().redo(),
+      }
+    : null;
+  // useEditorState stays null when the editor appears after the first render (immediatelyRender: false), so fall back to a direct read.
+  const live = useEditorState({ editor, selector: ({ editor: e }) => pick(e) });
+  const s = live ?? pick(editor);
   void tick;
   if (!editor || !s) return <div className="rte rte--loading" aria-busy="true" />;
 
@@ -147,6 +147,7 @@ export function RichEditor({ value, onChange }: { value: string; onChange: (html
     const url = ask.a.trim();
     if (ask.kind === 'link') {
       if (!url) editor!.chain().focus().extendMarkRange('link').unsetLink().run();
+      else if (editor!.state.selection.empty && !editor!.isActive('link')) editor!.chain().focus().insertContent({ type: 'text', text: ask.b.trim() || url, marks: [{ type: 'link', attrs: { href: url } }] }).run();
       else editor!.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
     } else if (ask.kind === 'image' && /^https:\/\//.test(url)) editor!.chain().focus().setImage({ src: url, alt: ask.b }).run();
     else if (ask.kind === 'youtube' && url) editor!.chain().focus().setYoutubeVideo({ src: url }).run();
@@ -229,7 +230,7 @@ export function RichEditor({ value, onChange }: { value: string; onChange: (html
           <Btn label="טבלה" active={s.table} on={() => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}><Table2 /></Btn>
           <Btn label="בלוק קוד" active={s.codeBlock} on={() => editor.chain().focus().toggleCodeBlock().run()}><Code2 /></Btn>
           <Btn label="ציטוט" active={s.quote} on={() => editor.chain().focus().toggleBlockquote().run()}><Quote /></Btn>
-          <Btn label="קופסת הדגשה" active={s.callout} on={() => editor.chain().focus().insertContent({ type: 'callout', attrs: { tone: 'info' }, content: [{ type: 'paragraph' }] }).run()}><Info /></Btn>
+          <Btn label="קופסת הדגשה" active={s.callout} on={() => (s.callout ? editor.chain().focus().lift('callout').run() : editor.chain().focus().wrapIn('callout', { tone: 'info' }).run())}><Info /></Btn>
           <Btn label="כפתור" on={() => openAsk('button')}><MousePointerClick /></Btn>
           <Btn label="קו מפריד" on={() => editor.chain().focus().setHorizontalRule().run()}><Minus /></Btn>
         </div>
@@ -247,7 +248,7 @@ export function RichEditor({ value, onChange }: { value: string; onChange: (html
       {ask ? (
         <form className="rte-ask" onSubmit={(e) => { e.preventDefault(); applyAsk(); }}>
           <input className="ad-input ltr" dir="ltr" autoFocus value={ask.a} onChange={(e) => setAsk({ ...ask, a: e.target.value })} placeholder={ask.kind === 'image' ? 'https://… כתובת תמונה' : ask.kind === 'youtube' ? 'https://youtube.com/watch?v=…' : ask.kind === 'button' ? '/contact/ או https://…' : 'https://… או /knowledge/slug/'} aria-label="כתובת" />
-          {ask.kind === 'image' || ask.kind === 'button' ? <input className="ad-input" value={ask.b} onChange={(e) => setAsk({ ...ask, b: e.target.value })} placeholder={ask.kind === 'image' ? 'טקסט חלופי (alt)' : 'טקסט הכפתור'} aria-label={ask.kind === 'image' ? 'טקסט חלופי' : 'טקסט הכפתור'} /> : null}
+          {ask.kind === 'image' || ask.kind === 'button' || (ask.kind === 'link' && editor.state.selection.empty && !editor.isActive('link')) ? <input className="ad-input" value={ask.b} onChange={(e) => setAsk({ ...ask, b: e.target.value })} placeholder={ask.kind === 'image' ? 'טקסט חלופי (alt)' : ask.kind === 'link' ? 'טקסט הקישור' : 'טקסט הכפתור'} aria-label={ask.kind === 'image' ? 'טקסט חלופי' : ask.kind === 'link' ? 'טקסט הקישור' : 'טקסט הכפתור'} /> : null}
           <button type="submit" className="ad-btn ad-btn--primary ad-btn--sm">{ask.kind === 'link' && !ask.a.trim() ? 'הסרת קישור' : 'הוספה'}</button>
           <button type="button" className="ad-btn ad-btn--ghost ad-btn--sm" onClick={() => setAsk(null)}>ביטול</button>
         </form>

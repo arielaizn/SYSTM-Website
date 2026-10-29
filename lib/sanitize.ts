@@ -29,11 +29,11 @@ export function sanitizeBody(html: string): string {
     allowedStyles: {
       '*': { 'text-align': [/^(left|right|center|justify)$/], color: [/^#[0-9a-f]{3,8}$/i, /^rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)$/i], 'background-color': [/^#[0-9a-f]{3,8}$/i, /^rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)$/i] },
     },
-    allowedClasses: { div: ['callout', 'callout--info', 'callout--warn', 'callout--tip', 'video'], a: ['cta-btn'], pre: ['*'], code: ['*'] },
+    allowedClasses: { div: ['note-box', 'note-box--info', 'note-box--warn', 'note-box--tip', 'video'], a: ['cta-btn'], pre: ['*'], code: ['*'] },
     allowedSchemes: ['https', 'mailto', 'tel'],
     allowedSchemesByTag: { img: ['https'] },
     allowProtocolRelative: false,
-    exclusiveFilter: (f) => (f.tag === 'iframe' && !YOUTUBE.test(f.attribs.src ?? '')) || (f.tag === 'input' && f.attribs.type !== 'checkbox'),
+    exclusiveFilter: (f) => (f.tag === 'img' && !f.attribs.src) || (f.tag === 'iframe' && !YOUTUBE.test(f.attribs.src ?? '')) || (f.tag === 'input' && f.attribs.type !== 'checkbox'),
     transformTags: {
       a: (tag, attribs) => {
         const href = attribs.href ?? '';
