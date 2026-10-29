@@ -18,6 +18,7 @@
     "qa:security": "node scripts/security-check.mjs"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "@tiptap/extension-highlight": "^3.32.1",
     "@tiptap/extension-image": "^3.32.1",
     "@tiptap/extension-list": "^3.32.1",
@@ -38,7 +39,8 @@
     "react-dom": "^19.3.1",
     "sanitize-html": "^2.18.1",
     "three": "^0.186.1",
-    "web-push": "^3.6.7"
+    "web-push": "^3.6.7",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@types/node": "^26.6.5",
