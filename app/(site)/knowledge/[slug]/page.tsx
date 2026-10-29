@@ -6,6 +6,7 @@ import { ArrowUpLeft } from '../../../../components/ui/Icons';
 import { SmartLink } from '../../../../components/ui/SmartLink';
 import { articleBySlug, getContent } from '../../../../lib/content-source';
 import { rv } from '../../../../lib/reveal';
+import { sanitizeBody, withHeadingIds } from '../../../../lib/sanitize';
 import { articleSchema, breadcrumbSchema, JsonLd, pageMeta } from '../../../../lib/seo';
 
 type Params = { slug: string };
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params;
   const a = articleBySlug(await getContent(), slug);
   if (!a) return {};
-  return pageMeta({ title: a.title, description: a.summary, path: `/knowledge/${a.slug}/`, type: 'article' });
+  return pageMeta({ title: a.seoTitle || a.title, description: a.seoDescription || a.summary, path: `/knowledge/${a.slug}/`, type: 'article', image: a.ogImage, keywords: a.focusKeyword });
 }
 
 export default async function ArticlePage({ params }: { params: Promise<Params> }) {
@@ -27,6 +28,9 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
   const a = articleBySlug({ articles } as never, slug);
   if (!a) notFound();
   const next = articles[(articles.findIndex((x) => x.slug === a.slug) + 1) % articles.length];
+  // Rich-text articles render their (re-sanitized) HTML; older ones keep the plain sections.
+  const rich = a.body ? withHeadingIds(sanitizeBody(a.body)) : null;
+  const toc = rich ? rich.headings : a.sections.map(([h]) => h);
 
   return (
     <main id="main">
@@ -53,20 +57,24 @@ export default async function ArticlePage({ params }: { params: Promise<Params> 
       <article className="container article" data-stage="reading">
         <aside className="article__toc lg lg--dense" aria-label="תוכן עניינים" data-reveal="">
           <p>במדריך הזה</p>
-          {a.sections.map(([h], i) => (
-            <a key={h} href={`#part-${i + 1}`}>
+          {toc.map((h, i) => (
+            <a key={`${h}-${i}`} href={`#part-${i + 1}`}>
               <span>{String(i + 1).padStart(2, '0')}</span>
               {h}
             </a>
           ))}
         </aside>
         <div className="article__body">
-          {a.sections.map(([h, t], i) => (
-            <section key={h} id={`part-${i + 1}`} {...rv(0)}>
-              <h2 className="h-md">{h}</h2>
-              <p>{t}</p>
-            </section>
-          ))}
+          {rich ? (
+            <div className="prose" dangerouslySetInnerHTML={{ __html: rich.html }} />
+          ) : (
+            a.sections.map(([h, t], i) => (
+              <section key={h} id={`part-${i + 1}`} {...rv(0)}>
+                <h2 className="h-md">{h}</h2>
+                <p>{t}</p>
+              </section>
+            ))
+          )}
           <div className="article__next" {...rv(0)}>
             <SmartLink href="/knowledge/" className="text-link">
               חזרה לכל המדריכים <ArrowUpLeft />

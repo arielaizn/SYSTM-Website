@@ -45,6 +45,12 @@ export default defineSchema({
     summary: v.string(),
     read: v.string(),
     sections: v.array(v.object({ h: v.string(), t: v.string() })),
+    // Rich-text body (sanitized HTML from the admin editor). `sections` stays as a plain-text mirror for search and old data.
+    body: v.optional(v.string()),
+    seoTitle: v.optional(v.string()),
+    seoDescription: v.optional(v.string()),
+    focusKeyword: v.optional(v.string()),
+    ogImage: v.optional(v.string()),
     publishedAt: v.optional(v.number()),
     updatedAt: v.number(),
   })

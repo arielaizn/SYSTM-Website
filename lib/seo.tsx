@@ -4,13 +4,15 @@ import { absoluteUrl, site } from './config';
 import type { Settings } from './content-source';
 
 /** Per-page metadata. Canonical and og:url exist only once NEXT_PUBLIC_SITE_URL is set (docs/07). */
-export function pageMeta({ title, description, path, type = 'website' }: { title: string; description: string; path: string; type?: 'website' | 'article' }): Metadata {
+export function pageMeta({ title, description, path, type = 'website', image, keywords }: { title: string; description: string; path: string; type?: 'website' | 'article'; image?: string; keywords?: string }): Metadata {
   const url = absoluteUrl(path);
   return {
     title,
     description,
+    ...(keywords ? { keywords } : {}),
     ...(url ? { alternates: { canonical: url } } : {}),
-    openGraph: { title: `${title} | SYSTM`, description, type, locale: 'he_IL', siteName: 'SYSTM', ...(url ? { url, images: [{ url: absoluteUrl('/og.png'), width: 1200, height: 630, alt: 'SYSTM' }] } : {}) },
+    openGraph: { title: `${title} | SYSTM`, description, type, locale: 'he_IL', siteName: 'SYSTM', ...(url ? { url, images: [{ url: image || absoluteUrl('/og.png'), width: 1200, height: 630, alt: 'SYSTM' }] } : {}) },
+    twitter: { card: 'summary_large_image', title: `${title} | SYSTM`, description },
   };
 }
 
@@ -60,9 +62,13 @@ export const serviceSchema = (s: Service) => ({
 export const articleSchema = (a: Article) => ({
   '@context': 'https://schema.org',
   '@type': 'Article',
-  headline: a.title,
-  description: a.summary,
+  headline: a.seoTitle || a.title,
+  description: a.seoDescription || a.summary,
   inLanguage: 'he-IL',
+  ...(a.focusKeyword ? { keywords: a.focusKeyword } : {}),
+  ...(a.ogImage ? { image: a.ogImage } : {}),
+  ...(a.publishedAt ? { datePublished: new Date(a.publishedAt).toISOString() } : {}),
+  ...(a.updatedAt ? { dateModified: new Date(a.updatedAt).toISOString() } : {}),
   author: { '@type': 'Organization', name: 'SYSTM' },
   publisher: { '@type': 'Organization', name: 'SYSTM' },
   ...withUrl(`/knowledge/${a.slug}/`),

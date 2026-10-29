@@ -10,6 +10,7 @@ import { verifyPassword } from '../../lib/admin-password';
 import { checkLogin, recordFailure, recordSuccess } from '../../lib/admin-rate';
 import { dropVersionCache, endSession, requireAdminAction, startSession } from '../../lib/admin-session';
 import { adminConfigured } from '../../lib/convex-server';
+import { bodyToSections, sanitizeBody } from '../../lib/sanitize';
 import { articles as defaultArticles, faqs as defaultFaqs, services as defaultServices } from '../../lib/content';
 import { defaultSettings } from '../../lib/content-source';
 
@@ -225,9 +226,12 @@ export async function serviceReorder(ids: string[]) {
 }
 
 // --- Articles -----------------------------------------------------------------------------------------
-type ArticleInput = { slug: string; status: 'draft' | 'published'; category: string; title: string; summary: string; read: string; sections: { h: string; t: string }[] };
+type ArticleInput = { slug: string; status: 'draft' | 'published'; category: string; title: string; summary: string; read: string; sections: { h: string; t: string }[]; body?: string; seoTitle?: string; seoDescription?: string; focusKeyword?: string; ogImage?: string };
 
-export async function articleSave(id: string | null, data: ArticleInput) {
+export async function articleSave(id: string | null, input: ArticleInput) {
+  // The rich-text body is sanitized here, on the server, before it reaches Convex. `sections` becomes a plain-text mirror of it.
+  const body = input.body ? sanitizeBody(input.body) : '';
+  const data = { ...input, body: body || undefined, sections: body ? bodyToSections(body) : input.sections };
   return run(async () => (await adminMutation(api.articles.upsert, { id: (id as Id<'articles'>) ?? undefined, data })) as string, { content: true });
 }
 

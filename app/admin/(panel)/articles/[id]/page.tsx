@@ -19,7 +19,7 @@ export default async function ArticleEditPage({ params }: { params: Promise<{ id
   return (
     <>
       <PageTop title={doc.title} subtitle={`/knowledge/${doc.slug}/`} />
-      <ArticleEditor id={doc._id} initial={{ slug: doc.slug, status: doc.status, category: doc.category, title: doc.title, summary: doc.summary, read: doc.read, sections: doc.sections }} />
+      <ArticleEditor id={doc._id} initial={{ slug: doc.slug, status: doc.status, category: doc.category, title: doc.title, summary: doc.summary, read: doc.read, sections: doc.sections, body: doc.body, seoTitle: doc.seoTitle, seoDescription: doc.seoDescription, focusKeyword: doc.focusKeyword, ogImage: doc.ogImage }} />
     </>
   );
 }

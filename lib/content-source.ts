@@ -75,6 +75,13 @@ function fromRemote(r: Remote): Content | null {
     summary: a.summary,
     read: a.read,
     sections: (a.sections as { h: string; t: string }[]).map((x) => [x.h, x.t] as [string, string]),
+    body: a.body || undefined,
+    seoTitle: a.seoTitle || undefined,
+    seoDescription: a.seoDescription || undefined,
+    focusKeyword: a.focusKeyword || undefined,
+    ogImage: a.ogImage || undefined,
+    publishedAt: a.publishedAt,
+    updatedAt: a.updatedAt,
   }));
   const s = r.settings as Settings | null;
   return {

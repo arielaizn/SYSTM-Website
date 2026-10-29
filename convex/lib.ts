@@ -54,6 +54,11 @@ export const articleData = v.object({
   summary: v.string(),
   read: v.string(),
   sections: v.array(v.object({ h: v.string(), t: v.string() })),
+  body: v.optional(v.string()),
+  seoTitle: v.optional(v.string()),
+  seoDescription: v.optional(v.string()),
+  focusKeyword: v.optional(v.string()),
+  ogImage: v.optional(v.string()),
 });
 
 export const faqData = v.object({ q: v.string(), a: v.string(), published: v.boolean() });
@@ -84,13 +89,18 @@ export function validateService(d: { slug: string; label: string; title: string;
   for (const [k, s, m] of [['label', d.label, 80], ['title', d.title, 200], ['intro', d.intro, 800], ['short', d.short, 300], ['meta', d.meta, 300], ['fit', d.fit, 500], ['outcome', d.outcome, 500]] as const) assertMax(k, s, m);
 }
 
-export function validateArticle(d: { slug: string; title: string; summary: string; category: string; read: string; sections: { h: string; t: string }[] }) {
+export function validateArticle(d: { slug: string; title: string; summary: string; category: string; read: string; sections: { h: string; t: string }[]; body?: string; seoTitle?: string; seoDescription?: string; focusKeyword?: string; ogImage?: string }) {
   assertSlug(d.slug);
   if (!d.title.trim()) throw new Error('title is required');
   if (d.sections.length > 20) throw new Error('too many sections');
   assertMax('title', d.title, 200);
   assertMax('summary', d.summary, 500);
   assertMax('category', d.category, 60);
+  assertMax('body', d.body ?? '', 200000);
+  assertMax('seo title', d.seoTitle ?? '', 120);
+  assertMax('seo description', d.seoDescription ?? '', 320);
+  assertMax('focus keyword', d.focusKeyword ?? '', 80);
+  if (d.ogImage) assertSafeHref(d.ogImage);
   for (const s of d.sections) {
     assertMax('section title', s.h, 200);
     assertMax('section text', s.t, 8000);

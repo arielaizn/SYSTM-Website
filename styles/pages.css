@@ -156,3 +156,34 @@
 .legal h2 { margin-bottom: 14px; }
 .legal p { font-size: 20px; color: #c2cdd0; max-width: 62ch; }
 .legal .text-link { margin-top: 18px; }
+
+/* Rich-text article body (output of the admin editor). Matches the plain sections above. */
+.prose { color: #c9d3d6; font-size: clamp(19px, 1.7vw, 22px); line-height: 1.95; }
+.prose > * + * { margin-top: 1.1em; }
+.prose h2 { font-size: clamp(28px, 3vw, 38px); line-height: 1.25; color: var(--ink); margin-top: 2.2em; scroll-margin-top: 120px; }
+.prose h3 { font-size: clamp(22px, 2.2vw, 28px); line-height: 1.3; color: var(--ink); margin-top: 1.8em; }
+.prose h4 { font-size: 19px; color: var(--ink); margin-top: 1.5em; }
+.prose a { color: var(--ice); border-bottom: 1px solid rgb(172 244 248 / 0.35); }
+.prose strong { color: var(--ink); }
+.prose mark { color: var(--ink); border-radius: 4px; padding: 0 4px; }
+.prose ul, .prose ol { padding-inline-start: 1.4em; }
+.prose ul { list-style: disc; } .prose ol { list-style: decimal; }
+.prose li + li { margin-top: 0.4em; }
+.prose ul[data-type='taskList'] { list-style: none; padding: 0; }
+.prose ul[data-type='taskList'] li { display: flex; gap: 12px; align-items: baseline; }
+.prose blockquote { border-inline-start: 3px solid var(--ice); padding: 4px 22px; color: var(--ink); font-size: 1.08em; }
+.prose hr { border: 0; height: 1px; background: var(--line-soft); margin-block: 2em; }
+.prose img { max-width: 100%; height: auto; border-radius: 20px; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.08), 0 0 30px -8px rgb(172 244 248 / 0.3); }
+.prose iframe { width: 100%; aspect-ratio: 16 / 9; height: auto; border: 0; border-radius: 20px; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.1), 0 0 34px -8px rgb(172 244 248 / 0.35); }
+.prose code { font-family: var(--mono); font-size: 0.86em; background: rgb(255 255 255 / 0.07); padding: 2px 7px; border-radius: 6px; direction: ltr; unicode-bidi: isolate; }
+.prose pre { direction: ltr; text-align: left; overflow-x: auto; background: #0a1114; border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; font-size: 15px; line-height: 1.7; }
+.prose pre code { background: none; padding: 0; }
+.prose table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.86em; border-radius: 16px; overflow: hidden; box-shadow: 0 0 0 1px rgb(172 244 248 / 0.22); display: block; overflow-x: auto; }
+.prose th, .prose td { padding: 12px 16px; border-bottom: 1px solid var(--line-soft); text-align: start; vertical-align: top; }
+.prose th { background: rgb(172 244 248 / 0.08); color: var(--ink); }
+.prose .callout { border-radius: 20px; padding: 18px 22px; background: rgb(172 244 248 / 0.07); box-shadow: 0 0 0 1px rgb(172 244 248 / 0.35), 0 0 32px -10px rgb(172 244 248 / 0.4); }
+.prose .callout--warn { background: rgb(255 210 138 / 0.07); box-shadow: 0 0 0 1px rgb(255 210 138 / 0.4), 0 0 32px -10px rgb(255 210 138 / 0.35); }
+.prose .callout--tip { background: rgb(123 227 161 / 0.07); box-shadow: 0 0 0 1px rgb(123 227 161 / 0.4), 0 0 32px -10px rgb(123 227 161 / 0.35); }
+.prose .callout > * + * { margin-top: 0.6em; }
+.prose p[data-btn] { display: flex; }
+.prose .cta-btn { display: inline-flex; align-items: center; min-height: 56px; padding: 0 30px; border-radius: 999px; background: var(--ice); color: #03181b; font-weight: 700; font-size: 16px; border: 0; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.75), 0 0 0 1px rgb(172 244 248 / 0.4), 0 0 30px -2px rgb(172 244 248 / 0.55); }

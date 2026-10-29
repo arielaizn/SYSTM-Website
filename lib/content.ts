@@ -217,6 +217,14 @@ export type Article = {
   summary: string;
   read: string;
   sections: [string, string][];
+  /** Sanitized rich-text HTML from the admin editor. When present it is rendered instead of `sections`. */
+  body?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  focusKeyword?: string;
+  ogImage?: string;
+  publishedAt?: number;
+  updatedAt?: number;
 };
 
 export const articles: Article[] = [

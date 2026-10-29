@@ -4,19 +4,42 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { articleDelete, articleSave } from '../../app/admin/actions';
-import { Counter, move, useUnsavedGuard } from './editors';
+import { bodyWordCount } from '../../lib/sanitize';
+import { seoChecks, seoScore } from '../../lib/seo-score';
+import { Counter, useUnsavedGuard } from './editors';
 import { Icon } from './Icon';
+import { RichEditor } from './RichEditor';
 import { useAct, useAdmin } from './ui';
 
-export type ArticleInput = { slug: string; status: 'draft' | 'published'; category: string; title: string; summary: string; read: string; sections: { h: string; t: string }[] };
+export type ArticleInput = {
+  slug: string;
+  status: 'draft' | 'published';
+  category: string;
+  title: string;
+  summary: string;
+  read: string;
+  sections: { h: string; t: string }[];
+  /** Rich-text HTML. Articles written before the rich editor only have `sections`; they are converted on load. */
+  body?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  focusKeyword?: string;
+  ogImage?: string;
+};
 
-export const EMPTY_ARTICLE: ArticleInput = { slug: '', status: 'draft', category: '', title: '', summary: '', read: '4 דקות קריאה', sections: [{ h: '', t: '' }] };
+export const EMPTY_ARTICLE: ArticleInput = { slug: '', status: 'draft', category: '', title: '', summary: '', read: '4 דקות קריאה', sections: [], body: '' };
 
-const words = (a: ArticleInput) => a.sections.reduce((n, s) => n + `${s.h} ${s.t}`.split(/\s+/).filter(Boolean).length, 0);
+const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+/** Old plain sections -> HTML, so every article opens in the rich editor. */
+export const sectionsToHtml = (sections: { h: string; t: string }[]) =>
+  sections.map((s) => `${s.h ? `<h2>${esc(s.h)}</h2>` : ''}${s.t.split(/\n+/).filter(Boolean).map((p) => `<p>${esc(p)}</p>`).join('')}`).join('');
+
+const words = (a: ArticleInput) => bodyWordCount(a.body ?? '');
 const readLabel = (n: number) => `${Math.max(1, Math.round(n / 200))} דקות קריאה`;
 
-export function ArticleEditor({ id, initial }: { id: string | null; initial: ArticleInput }) {
+export function ArticleEditor({ id, initial: raw }: { id: string | null; initial: ArticleInput }) {
   const router = useRouter();
+  const initial = useMemo(() => ({ ...raw, body: raw.body ?? sectionsToHtml(raw.sections) }), [raw]);
   const { confirm } = useAdmin();
   const { act, pending } = useAct();
   const [d, setD] = useState(initial);
@@ -24,11 +47,12 @@ export function ArticleEditor({ id, initial }: { id: string | null; initial: Art
   const dirty = useMemo(() => JSON.stringify(d) !== JSON.stringify(saved), [d, saved]);
   useUnsavedGuard(dirty);
   const set = <K extends keyof ArticleInput>(k: K, v: ArticleInput[K]) => setD((p) => ({ ...p, [k]: v }));
-  const setSection = (i: number, patch: Partial<{ h: string; t: string }>) => set('sections', d.sections.map((s, k) => (k === i ? { ...s, ...patch } : s)));
   const wc = words(d);
+  const checks = useMemo(() => seoChecks({ title: d.title, summary: d.summary, slug: d.slug, seoTitle: d.seoTitle, seoDescription: d.seoDescription, focusKeyword: d.focusKeyword, bodyHtml: d.body ?? '', bodyText: (d.body ?? '').replace(/<[^>]+>/g, ' ') }), [d]);
+  const score = seoScore(checks);
 
   async function save(status?: 'draft' | 'published') {
-    const data = { ...d, status: status ?? d.status, sections: d.sections.filter((s) => s.h.trim() || s.t.trim()) };
+    const data = { ...d, status: status ?? d.status };
     const r = await act(() => articleSave(id, data), data.status === 'published' ? 'נשמר, והמדריך באתר' : 'נשמר כטיוטה');
     if (!r.ok) return;
     setD(data);
@@ -89,34 +113,53 @@ export function ArticleEditor({ id, initial }: { id: string | null; initial: Art
 
       <div className="ad-card">
         <div className="ad-card__head">
-          <h2>פרקים</h2>
-          <p>כל פרק מופיע בתוכן העניינים</p>
+          <h2>תוכן המדריך</h2>
+          <p>{wc} מילים · כותרות H2 יוצרות את תוכן העניינים</p>
         </div>
-        {d.sections.map((s, i) => (
-          <div className="ad-section-edit" key={i}>
-            <div className="ad-section-edit__head">
-              <span>פרק {String(i + 1).padStart(2, '0')}</span>
-              <div className="ad-array__btns">
-                <button type="button" className="ad-btn ad-btn--icon ad-btn--ghost" aria-label="הזזה למעלה" disabled={i === 0} onClick={() => set('sections', move(d.sections, i, -1))}>
-                  <Icon name="up" />
-                </button>
-                <button type="button" className="ad-btn ad-btn--icon ad-btn--ghost" aria-label="הזזה למטה" disabled={i === d.sections.length - 1} onClick={() => set('sections', move(d.sections, i, 1))}>
-                  <Icon name="down" />
-                </button>
-                <button type="button" className="ad-btn ad-btn--icon ad-btn--ghost" aria-label="מחיקת הפרק" onClick={() => set('sections', d.sections.filter((_, k) => k !== i))}>
-                  <Icon name="trash" />
-                </button>
+        <RichEditor value={d.body ?? ''} onChange={(html) => set('body', html)} />
+      </div>
+
+      <div className="ad-card">
+        <div className="ad-card__head">
+          <h2>קידום בגוגל (SEO)</h2>
+          <span className="ad-badge" data-s={score >= 80 ? 'published' : 'draft'}>ציון {score}</span>
+        </div>
+        <div className="seo-serp" aria-label="תצוגה מקדימה בגוגל">
+          <small dir="ltr">getsystm.com › knowledge › {d.slug || '…'}</small>
+          <b>{(d.seoTitle || d.title || 'כותרת המדריך').slice(0, 70)}</b>
+          <span>{(d.seoDescription || d.summary || 'התיאור יופיע כאן.').slice(0, 165)}</span>
+        </div>
+        <div className="ad-row ad-row--2">
+          <label className="ad-field">
+            <span>מילת מפתח ראשית</span>
+            <input className="ad-input" value={d.focusKeyword ?? ''} onChange={(e) => set('focusKeyword', e.target.value)} maxLength={80} placeholder="אוטומציה לעסקים קטנים" />
+          </label>
+          <label className="ad-field">
+            <span>תמונה לשיתוף (og:image)</span>
+            <input className="ad-input ltr" dir="ltr" value={d.ogImage ?? ''} onChange={(e) => set('ogImage', e.target.value)} placeholder="https://…" />
+          </label>
+        </div>
+        <label className="ad-field">
+          <span>כותרת לגוגל</span>
+          <input className="ad-input" value={d.seoTitle ?? ''} onChange={(e) => set('seoTitle', e.target.value)} maxLength={120} placeholder={d.title} />
+          <Counter value={d.seoTitle ?? ''} max={60} />
+        </label>
+        <label className="ad-field">
+          <span>תיאור לגוגל</span>
+          <textarea className="ad-textarea" rows={2} value={d.seoDescription ?? ''} onChange={(e) => set('seoDescription', e.target.value)} maxLength={320} placeholder={d.summary} />
+          <Counter value={d.seoDescription ?? ''} max={160} />
+        </label>
+        <ul className="seo-checks">
+          {checks.map((c) => (
+            <li key={c.id} data-ok={c.ok}>
+              <span aria-hidden="true">{c.ok ? '✓' : '○'}</span>
+              <div>
+                {c.label}
+                {c.ok ? null : <small>{c.tip}</small>}
               </div>
-            </div>
-            <input className="ad-input" placeholder="כותרת הפרק" value={s.h} onChange={(e) => setSection(i, { h: e.target.value })} maxLength={200} aria-label={`כותרת פרק ${i + 1}`} />
-            <textarea className="ad-textarea" rows={6} placeholder="הטקסט של הפרק" value={s.t} onChange={(e) => setSection(i, { t: e.target.value })} maxLength={8000} aria-label={`טקסט פרק ${i + 1}`} />
-          </div>
-        ))}
-        {d.sections.length < 20 ? (
-          <button type="button" className="ad-btn ad-btn--sm" style={{ justifySelf: 'start' }} onClick={() => set('sections', [...d.sections, { h: '', t: '' }])}>
-            <Icon name="plus" /> פרק חדש
-          </button>
-        ) : null}
+            </li>
+          ))}
+        </ul>
       </div>
 
       <div className="ad-sticky-save">
