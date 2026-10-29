@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { articleDelete, articleSave } from '../../app/admin/actions';
-import { bodyWordCount } from '../../lib/sanitize';
+import { bodyWordCount, sectionsToHtml } from '../../lib/sanitize';
 import { seoChecks, seoScore } from '../../lib/seo-score';
 import { Counter, useUnsavedGuard } from './editors';
 import { Icon } from './Icon';
@@ -28,11 +28,6 @@ export type ArticleInput = {
 };
 
 export const EMPTY_ARTICLE: ArticleInput = { slug: '', status: 'draft', category: '', title: '', summary: '', read: '4 דקות קריאה', sections: [], body: '' };
-
-const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-/** Old plain sections -> HTML, so every article opens in the rich editor. */
-export const sectionsToHtml = (sections: { h: string; t: string }[]) =>
-  sections.map((s) => `${s.h ? `<h2>${esc(s.h)}</h2>` : ''}${s.t.split(/\n+/).filter(Boolean).map((p) => `<p>${esc(p)}</p>`).join('')}`).join('');
 
 const words = (a: ArticleInput) => bodyWordCount(a.body ?? '');
 const readLabel = (n: number) => `${Math.max(1, Math.round(n / 200))} דקות קריאה`;

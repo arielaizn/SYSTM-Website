@@ -233,6 +233,25 @@ export async function serviceReorder(ids: string[]) {
   );
 }
 
+// --- IndexNow (Bing, Yandex and others learn about new URLs immediately) ------------------------------------
+export async function indexNowSubmit() {
+  return run(async () => {
+    const key = process.env.INDEXNOW_KEY ?? '';
+    const base = (process.env.NEXT_PUBLIC_SITE_URL ?? '').replace(/\/$/, '');
+    if (!/^[A-Za-z0-9-]{8,128}$/.test(key) || !base.startsWith('https://')) throw new Error('IndexNow לא הוגדר: צריך INDEXNOW_KEY ו־NEXT_PUBLIC_SITE_URL');
+    const { default: sitemap } = await import('../sitemap');
+    const urlList = (await sitemap()).map((e) => e.url);
+    const res = await fetch('https://api.indexnow.org/indexnow', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json; charset=utf-8' },
+      body: JSON.stringify({ host: new URL(base).host, key, keyLocation: `${base}/api/indexnow`, urlList }),
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!res.ok && res.status !== 202) throw new Error(`IndexNow ענה ${res.status}`);
+    return { sent: urlList.length };
+  });
+}
+
 // --- Landing pages --------------------------------------------------------------------------------------
 export type PageInput = { slug: string; title: string; status: 'draft' | 'published'; blocks: AnyBlock[]; seoTitle?: string; seoDescription?: string; ogImage?: string; noindex?: boolean };
 

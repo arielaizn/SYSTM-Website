@@ -383,3 +383,5 @@
 .ad-switch-row { display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; }
 .ad-switch-row input { margin-top: 4px; accent-color: var(--ad-ice); }
 @media (max-width: 1180px) { .lb-main { grid-template-columns: 1fr; } .lb-palette, .lb-props { position: static; max-height: none; } }
+.lb-frame[data-device='mobile'] .lp-hero h1 { font-size: 38px; } .lb-frame[data-device='mobile'] .lp-h2 { font-size: 28px; }
+.lb-frame[data-device='tablet'] .lp-hero h1 { font-size: 52px; }

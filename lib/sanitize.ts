@@ -72,3 +72,8 @@ export function bodyToSections(html: string): { h: string; t: string }[] {
 }
 
 export const bodyWordCount = (html: string) => text(html).split(/\s+/).filter(Boolean).length;
+
+const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+/** Old plain sections -> HTML, so every article opens in the rich editor. */
+export const sectionsToHtml = (sections: { h: string; t: string }[]) =>
+  sections.map((s) => `${s.h ? `<h2>${esc(s.h)}</h2>` : ''}${s.t.split(/\n+/).filter(Boolean).map((p) => `<p>${esc(p)}</p>`).join('')}`).join('');
