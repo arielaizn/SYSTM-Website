@@ -53,6 +53,8 @@ const HEBREW: Record<string, string> = {
 function fail(e: unknown): R<never> {
   const raw = e instanceof Error ? e.message : String(e);
   if (/^[֐-׿]/.test(raw)) return { ok: false, error: raw.slice(0, 200) };
+  // The site is deployed before its Convex backend: say exactly what is missing instead of a generic failure.
+  if (/extra field|Could not find public function|ArgumentValidationError/i.test(raw)) return { ok: false, error: 'ה־Convex של האתר עוד לא עודכן לגרסה החדשה. צריך להריץ npx convex deploy (ראו README).' };
   const hit = raw.match(/Uncaught Error: ([^\n]+)/)?.[1] ?? raw;
   const clean = hit.replace(/\s+at .*$/, '').trim().slice(0, 220);
   const known = Object.entries(HEBREW).find(([k]) => clean.includes(k));
